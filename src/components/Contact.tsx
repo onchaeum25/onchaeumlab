@@ -88,15 +88,15 @@ export default function Contact() {
               <h4 className="text-2xl font-bold mb-2">원하시는 답변을 찾지 못하셨나요?</h4>
               <p className="text-gray-400">전문 매니저가 친절하고 상세하게 상담해 드립니다.</p>
             </div>
-            <!--div className="flex gap-4 flex-wrap">
-            <!--a href="tel:010-900-3279" className="px-8 py-4 bg-primary text-white font-bold hover:bg-primary-hover transition-colors">
-            전화 상담하기
-          </a-->
-          <!--a href="mailto:ceo@onchaeumlab.co.kr" className="px-8 py-4 border border-white/20 text-white font-bold hover:bg-white/10 transition-colors">
-          이메일 문의
-        </a-->
-      </div-->
-    </div>
+            {/* <div className="flex gap-4 flex-wrap">
+              <a href="tel:010-900-3279" className="px-8 py-4 bg-primary text-white font-bold hover:bg-primary-hover transition-colors">
+                전화 상담하기
+              </a>
+              <a href="mailto:ceo@onchaeumlab.co.kr" className="px-8 py-4 border border-white/20 text-white font-bold hover:bg-white/10 transition-colors">
+                이메일 문의
+              </a>
+            </div> */}
+          </div>
 
         </div >
       </div >
