@@ -11,7 +11,7 @@ export default function About() {
   return (
     <section id="about" className="py-32 bg-[#f8f9fa] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 lg:gap-16">
-        
+
         {/* Vertical Indicator */}
         <div className="hidden lg:flex flex-col items-center justify-start pt-4 w-12">
           <span className="text-gray-300 text-xs tracking-[0.3em] uppercase font-bold" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
@@ -30,7 +30,7 @@ export default function About() {
             </div>
             <div className="max-w-md">
               <p className="text-gray-600 leading-relaxed mb-6 font-medium">
-                기본에 충실한 좋은 결과물을 만드는 것은 기본입니다. 기대를 상회하는 가치를 지키는 기업 온채움랩.<br/>
+                기본에 충실한 좋은 결과물을 만드는 것은 기본입니다.<br /> 기대를 상회하는 가치를 지키는 기업 온채움랩.<br />
                 정직과 신뢰를 바탕으로 소중한 인연을 이어 나가겠습니다.
               </p>
               <button className="border-b-2 border-gray-900 pb-1 font-bold text-gray-900 hover:text-primary hover:border-primary transition-colors flex items-center gap-2">
@@ -41,7 +41,7 @@ export default function About() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {features.map((item, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}

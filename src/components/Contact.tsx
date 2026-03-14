@@ -26,7 +26,7 @@ export default function Contact() {
   return (
     <section id="contact" className="py-32 bg-[#f8f9fa] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 lg:gap-16">
-        
+
         {/* Vertical Indicator */}
         <div className="hidden lg:flex flex-col items-center justify-start pt-4 w-12">
           <span className="text-gray-300 text-xs tracking-[0.3em] uppercase font-bold" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
@@ -56,11 +56,11 @@ export default function Contact() {
           {/* FAQ Accordion */}
           <div className="space-y-4 mb-24">
             {faqs.map((faq, idx) => (
-              <div 
-                key={idx} 
+              <div
+                key={idx}
                 className={`border border-gray-200 bg-white transition-all duration-300 ${openIndex === idx ? 'shadow-md' : 'hover:border-gray-300'}`}
               >
-                <button 
+                <button
                   className="w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none"
                   onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
                 >
@@ -71,7 +71,7 @@ export default function Contact() {
                     {openIndex === idx ? <Minus size={16} /> : <Plus size={16} />}
                   </span>
                 </button>
-                <div 
+                <div
                   className={`overflow-hidden transition-all duration-300 ease-in-out ${openIndex === idx ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
                 >
                   <div className="px-8 pb-8 pt-2 text-gray-600 leading-relaxed font-medium border-t border-gray-100 mx-8 mt-2">
@@ -88,18 +88,18 @@ export default function Contact() {
               <h4 className="text-2xl font-bold mb-2">원하시는 답변을 찾지 못하셨나요?</h4>
               <p className="text-gray-400">전문 매니저가 친절하고 상세하게 상담해 드립니다.</p>
             </div>
-            <div className="flex gap-4 flex-wrap">
-              <a href="tel:010-900-3279" className="px-8 py-4 bg-primary text-white font-bold hover:bg-primary-hover transition-colors">
-                전화 상담하기
-              </a>
-              <a href="mailto:ceo@onchaeumlab.co.kr" className="px-8 py-4 border border-white/20 text-white font-bold hover:bg-white/10 transition-colors">
-                이메일 문의
-              </a>
-            </div>
-          </div>
+            <!--div className="flex gap-4 flex-wrap">
+            <!--a href="tel:010-900-3279" className="px-8 py-4 bg-primary text-white font-bold hover:bg-primary-hover transition-colors">
+            전화 상담하기
+          </a-->
+          <!--a href="mailto:ceo@onchaeumlab.co.kr" className="px-8 py-4 border border-white/20 text-white font-bold hover:bg-white/10 transition-colors">
+          이메일 문의
+        </a-->
+      </div-->
+    </div>
 
-        </div>
-      </div>
-    </section>
+        </div >
+      </div >
+    </section >
   );
 }
