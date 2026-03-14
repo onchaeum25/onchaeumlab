@@ -1,12 +1,17 @@
 import { motion } from 'motion/react';
+import Iridescence from './Iridescence';
 
 export default function Hero() {
   return (
     <section id="hero" className="relative w-full h-screen flex items-center overflow-hidden">
-      {/* Spline 3D Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        {/* @ts-ignore */}
-        <spline-viewer url="https://prod.spline.design/UC4s8BndAw3XMhTu/scene.splinecode"></spline-viewer>
+      {/* Iridescence Background */}
+      <div className="absolute inset-0 z-0 bg-white">
+        <Iridescence
+          color={[0.3, 0.7, 1]}
+          mouseReact={false}
+          amplitude={0.1}
+          speed={0.9}
+        />
       </div>
 
       {/* Content Overlay */}
