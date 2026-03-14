@@ -5,12 +5,12 @@ export default function Hero() {
   return (
     <section id="hero" className="relative w-full h-screen flex items-center overflow-hidden">
       {/* Iridescence Background */}
-      <div className="absolute inset-0 z-0 bg-white">
+      <div className="absolute inset-0 z-0">
         <Iridescence
-          color={[0.3, 0.7, 1]}
-          mouseReact={false}
+          color={[0.1, 0.2, 0.5]}
+          mouseReact
           amplitude={0.1}
-          speed={0.9}
+          speed={1}
         />
       </div>
 
