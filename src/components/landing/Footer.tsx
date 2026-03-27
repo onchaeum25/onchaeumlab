@@ -41,7 +41,7 @@ export default function Footer() {
             <div className="footer-legal-links">
               <a href="#" onClick={(e) => openModal(e, 'terms')}>이용약관</a>
               <a href="#" onClick={(e) => openModal(e, 'privacy')}>개인정보처리방침</a>
-              <a href="https://www.ftc.go.kr/bizCommPop.do?wrkr_no=%EC%82%AC%EC%97%85%EC%9E%90%EB%B2%88%ED%98%B8" target="_blank">사업자 정보 확인</a>
+              {/*</div>a href="https://www.ftc.go.kr/bizCommPop.do?wrkr_no=%EC%82%AC%EC%97%85%EC%9E%90%EB%B2%88%ED%98%B8" target="_blank">사업자 정보 확인</a>*/}
             </div>
           </div>
 
