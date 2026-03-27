@@ -1,16 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X } from 'lucide-react';
-import { portfolioData, categories, Category, PortfolioItem } from '../../data/portfolio';
+import { X, ExternalLink, PackageOpen } from 'lucide-react';
+import DOMPurify from 'dompurify';
+import { usePortfolioStore } from '../../store/usePortfolioStore';
+import { categories, Category, PortfolioItem } from '../../data/portfolio';
 import '../../styles/components/Portfolio.css';
 
 export default function Portfolio() {
+  const { portfolios, fetchPortfolios, isLoading } = usePortfolioStore();
   const [activeTab, setActiveTab] = useState<Category>('전체');
   const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
 
+  useEffect(() => {
+    fetchPortfolios();
+  }, [fetchPortfolios]);
+
   const filteredData = activeTab === '전체'
-    ? portfolioData
-    : portfolioData.filter(item => item.category === activeTab);
+    ? portfolios
+    : portfolios.filter(item => item.category === activeTab);
 
   return (
     <section id="portfolio" className="portfolio-section">
@@ -26,7 +33,7 @@ export default function Portfolio() {
             className="portfolio-header"
           >
             <h2 className="portfolio-title">Portfolio</h2>
-            <p className="portfolio-subtitle">온채움랩이 완성한 감도 높은 프로젝트를 확인하세요.</p>
+            <p className="portfolio-subtitle">온채움랩의 높은 퀄리티의 프로젝트를 확인하세요.</p>
           </motion.div>
 
           {/* Category Tabs */}
@@ -65,10 +72,10 @@ export default function Portfolio() {
               <motion.div
                 key={item.id}
                 layout
-                initial={{ opacity: 0, scale: 0.9, y: 50 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.9, x: 50 }}
+                whileInView={{ opacity: 1, scale: 1, x: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                exit={{ opacity: 0, scale: 0.9, x: 20 }}
                 transition={{ duration: 0.6, delay: idx * 0.15, ease: "easeOut" }}
                 className="portfolio-card"
                 onClick={() => setSelectedItem(item)}
@@ -89,12 +96,29 @@ export default function Portfolio() {
                 <div className="portfolio-card-info">
                   <span className="portfolio-card-cat">{item.category}</span>
                   <h3 className="portfolio-card-title">{item.title}</h3>
-                  <p className="portfolio-card-desc">{item.desc}</p>
+                  <p className="portfolio-card-desc">
+                    {item.shortDesc}
+                  </p>
                 </div>
               </motion.div>
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {/* Empty State */}
+        {filteredData.length === 0 && !isLoading && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="portfolio-empty"
+          >
+            <div className="portfolio-empty-icon-wrap">
+              <PackageOpen size={64} strokeWidth={1} className="portfolio-empty-icon" />
+            </div>
+            <h3 className="portfolio-empty-title">준비중입니다</h3>
+            <p className="portfolio-empty-text">선택하신 카테고리의 프로젝트를 열심히 준비하고 있습니다.<br />조금만 기다려 주세요!</p>
+          </motion.div>
+        )}
       </div>
 
       {/* Modal */}
@@ -128,17 +152,35 @@ export default function Portfolio() {
               </div>
               <div className="portfolio-modal-body">
                 <div className="portfolio-modal-overview">
-                  <h4 className="portfolio-modal-overview-title">Project Overview</h4>
-                  <p className="portfolio-modal-overview-text">
-                    {selectedItem.desc}
-                  </p>
+                  <div className="portfolio-modal-overview-header">
+                    <h4 className="portfolio-modal-overview-title">Project Overview</h4>
+                    {selectedItem.siteUrl && (
+                      <a
+                        href={selectedItem.siteUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="portfolio-modal-link-btn"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        사이트 바로가기 <ExternalLink size={14} />
+                      </a>
+                    )}
+                  </div>
+                  <div
+                    className="portfolio-modal-overview-text rich-text-content"
+                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selectedItem.desc) }}
+                  />
                 </div>
-                <img
-                  src={selectedItem.detailImage}
-                  alt={selectedItem.title}
-                  className="portfolio-modal-img"
-                  referrerPolicy="no-referrer"
-                />
+                {selectedItem.detailImage.map((url, index) => (
+                  <img
+                    key={index}
+                    src={url}
+                    alt={`${selectedItem.title} detail ${index + 1}`}
+                    className="portfolio-modal-img"
+                    referrerPolicy="no-referrer"
+                    style={{ marginBottom: '1rem' }}
+                  />
+                ))}
               </div>
             </motion.div>
           </motion.div>

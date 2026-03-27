@@ -1,6 +1,6 @@
 /* Reviews.css */
 .reviews-section {
-  padding-top: 7.5rem;
+  padding-top: 5.5rem;
   padding-bottom: 6rem;
   background-color: #F8F9FA;
   scroll-snap-align: start;
@@ -514,4 +514,222 @@
 
 .animate-marquee-reverse {
   animation: marquee-reverse 60s linear infinite;
+}
+
+/* Review Action & Modal */
+.reviews-action-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
+}
+
+.write-review-btn {
+  background-color: #232589;
+  color: #fff;
+  padding: 1.25rem 2.5rem;
+  border-radius: 9999px;
+  font-size: 1.125rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 15px -3px rgba(35, 37, 137, 0.2);
+}
+
+.write-review-btn:hover {
+  background-color: #1a1c6a;
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(35, 37, 137, 0.3);
+}
+
+.review-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.review-modal-content {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 36rem;
+  border-radius: 2.5rem;
+  padding: 3rem;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.review-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.review-modal-header h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.025em;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0.5rem;
+}
+
+.modal-close-btn:hover {
+  color: #111827;
+}
+
+.review-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .form-group-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #374151;
+  padding-left: 0.25rem;
+}
+
+.form-group label .required {
+  color: #232589;
+  margin-left: 0.125rem;
+}
+
+.form-group input, 
+.form-group textarea {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.form-group input:focus, 
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  background-color: #fff;
+  border-color: #232589;
+  box-shadow: 0 0 0 4px rgba(35, 37, 137, 0.1);
+}
+
+.form-group input.has-error,
+.form-group textarea.has-error {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 1px #ef4444 !important;
+}
+
+.rating-stars-wrap {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.rating-stars-wrap.has-error-stars {
+  border-color: #ef4444;
+}
+
+.form-error-msg {
+  color: #ef4444;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 0.25rem;
+  padding-left: 0.25rem;
+}
+
+.category-select {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  font-size: 1rem;
+  transition: all 0.2s;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.25rem;
+}
+
+.rating-select {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #d1d5db;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.star-btn.is-active {
+  color: #EEAB1B;
+}
+
+.star-btn:hover {
+  transform: scale(1.1);
+}
+
+.form-submit-btn {
+  background-color: #232589;
+  color: #ffffff;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  font-size: 1.125rem;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 1rem;
+}
+
+.form-submit-btn:hover {
+  background-color: #1a1c6a;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(35, 37, 137, 0.3);
+}
+
+.form-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

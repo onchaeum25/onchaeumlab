@@ -5,6 +5,9 @@ import AdminLayout from './components/admin/AdminLayout';
 import DashboardPage from './pages/admin/DashboardPage';
 import InquiriesPage from './pages/admin/InquiriesPage';
 
+import PortfoliosPage from './pages/admin/PortfoliosPage';
+import ReviewsPage from './pages/admin/ReviewsPage';
+
 export default function App() {
   return (
     <Router>
@@ -24,9 +27,9 @@ export default function App() {
           {/* 연락처 팝업으로 들어온 문의 내역 관리 페이지 */}
           <Route path="inquiries" element={<InquiriesPage />} />
           
-          {/* 추후 생성될 CRUD 페이지들 미리 세팅 */}
-          <Route path="portfolios" element={<div className="p-8 text-gray-500">포트폴리오 관리 개발중...</div>} />
-          <Route path="reviews" element={<div className="p-8 text-gray-500">리뷰 관리 개발중...</div>} />
+          {/* 포트폴리오 관리 페이지 */}
+          <Route path="portfolios" element={<PortfoliosPage />} />
+          <Route path="reviews" element={<ReviewsPage />} />
           <Route path="faqs" element={<div className="p-8 text-gray-500">FAQ 관리 개발중...</div>} />
         </Route>
       </Routes>

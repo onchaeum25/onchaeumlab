@@ -110,6 +110,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     message: ""
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -148,25 +149,30 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validate()) {
-      // 전역 상태 저장소에 데이터 추가 (관리자 페이지 연동)
-      addInquiry(formData);
-      
-      alert("접수가 되었습니다. 빠른 확인후 연락 드리겠습니다.");
-      
-      // 폼 초기화 및 닫기
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        budget: "",
-        service: "",
-        message: ""
-      });
-      setErrors({});
-      onClose();
+      setIsSubmitting(true);
+      try {
+        await addInquiry(formData);
+        
+        alert("접수가 되었습니다. 빠른 확인후 연락 드리겠습니다.");
+        
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          budget: "",
+          service: "",
+          message: ""
+        });
+        setErrors({});
+        onClose();
+      } catch (err) {
+        alert("접수 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 

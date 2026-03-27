@@ -1,20 +1,7 @@
-import { useState } from 'react';
-import { Eye, Search, Filter, Mail, Phone, Calendar, CheckCircle2, Circle, X, MessageSquare } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Eye, Search, Filter, Mail, Phone, Calendar, CheckCircle2, Circle, X, MessageSquare, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useInquiryStore } from '../../store/useInquiryStore';
-
-// ContactModal.tsx 구조를 반영한 문의 타입
-export interface Inquiry {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  budget: string;
-  service: string;
-  message: string;
-  createdAt: string;
-  isRead: boolean;
-}
+import { useInquiryStore, Inquiry } from '../../store/useInquiryStore';
 
 // 서비스 코드 -> 읽기 쉬운 라벨 변환
 const serviceMap: Record<string, string> = {
@@ -34,14 +21,25 @@ const budgetMap: Record<string, string> = {
 };
 
 export default function InquiriesPage() {
-  const inquiries = useInquiryStore((state) => state.inquiries);
-  const markAsRead = useInquiryStore((state) => state.markAsRead);
+  const { inquiries, isLoading, fetchInquiries, markAsRead, deleteInquiry } = useInquiryStore();
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
+
+  useEffect(() => {
+    fetchInquiries();
+  }, [fetchInquiries]);
 
   const handleInquirySelect = (inquiry: Inquiry) => {
     setSelectedInquiry(inquiry);
-    if (!inquiry.isRead) {
+    if (!inquiry.is_read) {
       markAsRead(inquiry.id);
+    }
+  };
+
+  const handleDelete = async (e: React.MouseEvent, id: number) => {
+    e.stopPropagation();
+    if (window.confirm('이 문의 내역을 정말 삭제하시겠습니까?')) {
+      await deleteInquiry(id);
+      if (selectedInquiry?.id === id) setSelectedInquiry(null);
     }
   };
 
@@ -90,13 +88,13 @@ export default function InquiriesPage() {
               {inquiries.map((inquiry) => (
                 <tr 
                    key={inquiry.id} 
-                   className={`border-b border-gray-50 hover:bg-gray-50/80 transition-colors group cursor-pointer ${!inquiry.isRead ? 'bg-indigo-50/10' : ''}`}
+                   className={`border-b border-gray-50 hover:bg-gray-50/80 transition-colors group cursor-pointer ${!inquiry.is_read ? 'bg-indigo-50/10' : ''}`}
                    onClick={() => handleInquirySelect(inquiry)}
                 >
                   <td className="p-4 pl-6">
-                    <div className={`flex items-center gap-2 text-sm font-medium ${inquiry.isRead ? 'text-gray-400' : 'text-point'}`}>
-                      {inquiry.isRead ? <CheckCircle2 size={16} /> : <Circle size={16} className="fill-point shadow-sm rounded-full" />}
-                      {inquiry.isRead ? '열람됨' : '새 문의'}
+                    <div className={`flex items-center gap-2 text-sm font-medium ${inquiry.is_read ? 'text-gray-400' : 'text-point'}`}>
+                      {inquiry.is_read ? <CheckCircle2 size={16} /> : <Circle size={16} className="fill-point shadow-sm rounded-full" />}
+                      {inquiry.is_read ? '열람됨' : '새 문의'}
                     </div>
                   </td>
                   <td className="p-4">
@@ -112,18 +110,26 @@ export default function InquiriesPage() {
                     {budgetMap[inquiry.budget] || inquiry.budget}
                   </td>
                   <td className="p-4 text-sm text-gray-500">
-                    {inquiry.createdAt}
+                    {new Date(inquiry.created_at).toLocaleDateString('ko-KR')}
                   </td>
                   <td className="p-4 pr-6 text-right">
-                    <button 
-                      className="p-2 text-gray-400 hover:text-point hover:bg-indigo-50 rounded-lg transition-colors inline-block"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleInquirySelect(inquiry);
-                      }}
-                    >
-                      <Eye size={18} />
-                    </button>
+                    <div className="flex justify-end gap-2">
+                      <button 
+                        className="p-2 text-gray-400 hover:text-point hover:bg-indigo-50 rounded-lg transition-colors inline-block"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleInquirySelect(inquiry);
+                        }}
+                      >
+                        <Eye size={18} />
+                      </button>
+                      <button 
+                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors inline-block"
+                        onClick={(e) => handleDelete(e, inquiry.id)}
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -133,7 +139,7 @@ export default function InquiriesPage() {
         
         {/* Pagination Dummy */}
         <div className="p-4 border-t border-gray-100 flex items-center justify-between">
-          <span className="text-sm text-gray-500 font-medium">총 3건의 문의내역</span>
+          <span className="text-sm text-gray-500 font-medium">총 {inquiries.length}건의 문의내역</span>
           <div className="flex gap-1">
             <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-point text-white font-bold text-sm shadow-md">1</button>
           </div>
@@ -166,7 +172,7 @@ export default function InquiriesPage() {
                     </span>
                     <span className="text-sm text-gray-400 font-medium flex items-center gap-1">
                       <Calendar size={14} />
-                      {selectedInquiry.createdAt}
+                      {new Date(selectedInquiry.created_at).toLocaleString('ko-KR')}
                     </span>
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900">{selectedInquiry.name}</h3>

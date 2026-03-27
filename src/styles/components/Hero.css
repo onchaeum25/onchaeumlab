@@ -5,7 +5,7 @@
 /* 1. 히어로 전체 감싸는 배경 영역 */
 .hero-wrapper {
   position: relative;
-  padding-top: 7.5rem;
+  padding-top: 5.5rem;
   padding-bottom: 5rem;
   overflow: hidden;
   scroll-snap-align: start;

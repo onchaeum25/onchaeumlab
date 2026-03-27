@@ -1,6 +1,6 @@
 /* Portfolio.css */
 .portfolio-section {
-  padding-top: 7.5rem;
+  padding-top: 5.5rem;
   padding-bottom: 6rem;
   background-color: #F8F9FA;
   scroll-snap-align: start;
@@ -366,4 +366,116 @@
   height: auto;
   border-radius: 0.75rem;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Rich Text & Site Link Styles */
+.portfolio-modal-overview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed #e5e7eb;
+}
+
+.portfolio-modal-overview-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #232589;
+  margin-bottom: 0 !important;
+}
+
+.portfolio-modal-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background-color: #232589;
+  color: #fff;
+  border-radius: 9999px;
+  font-size: 0.813rem;
+  font-weight: 700;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.portfolio-modal-link-btn:hover {
+  background-color: #1a1c6a;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(35, 37, 137, 0.2);
+}
+
+.rich-text-preview p, .rich-text-preview h1, .rich-text-preview h2, .rich-text-preview h3 {
+  margin: 0;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  display: inline;
+}
+
+.rich-text-content {
+  color: #374151;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.rich-text-content h1, .rich-text-content h2, .rich-text-content h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #111827;
+  font-weight: 700;
+}
+
+.rich-text-content p {
+  margin-bottom: 1rem;
+}
+
+.rich-text-content ul, .rich-text-content ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.rich-text-content li {
+  margin-bottom: 0.25rem;
+}
+
+/* Empty State Styles */
+.portfolio-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8rem 2rem;
+  background-color: #fff;
+  border-radius: 2.5rem;
+  border: 1px dashed #e5e7eb;
+  margin-top: 2rem;
+}
+
+.portfolio-empty-icon-wrap {
+  width: 100px;
+  height: 100px;
+  background-color: #f9fafb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.portfolio-empty-icon {
+  color: #d1d5db;
+}
+
+.portfolio-empty-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.portfolio-empty-text {
+  color: #6b7280;
+  font-size: 1.125rem;
+  line-height: 1.6;
 }

@@ -1,11 +1,104 @@
-import { useState, useRef } from 'react';
-import { motion } from 'motion/react';
-import { Star, User, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useEffect, useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Star, User, ChevronLeft, ChevronRight, X, ChevronDown } from 'lucide-react';
+import { useReviewStore } from '../../store/useReviewStore';
+import { categories } from '../../data/portfolio';
 import '../../styles/components/Reviews.css';
 
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface CustomSelectProps {
+  options: Option[];
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+}
+
+function CustomSelect({ options, value, onChange, placeholder = "선택해주세요" }: CustomSelectProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const selectRef = useRef<HTMLDivElement>(null);
+
+  const selectedOption = options.find(opt => opt.value === value);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={selectRef} className="custom-select-wrap">
+      <div className="custom-select-ghost">
+        <span className="truncate">
+          {selectedOption ? selectedOption.label : placeholder}
+        </span>
+        <ChevronDown className="w-5 h-5" />
+      </div>
+
+      <div className={`custom-select-main ${isOpen ? 'is-open' : ''}`}>
+        <div className="custom-select-header" onClick={() => setIsOpen(!isOpen)}>
+          <span className={selectedOption ? 'custom-select-value' : 'custom-select-placeholder'}>
+            {selectedOption ? selectedOption.label : placeholder}
+          </span>
+          <ChevronDown className="custom-select-icon" />
+        </div>
+
+        <div className="custom-select-options">
+          <div className="custom-select-options-inner">
+            {options.map((option) => (
+              <div
+                key={option.value}
+                className={`custom-select-option ${value === option.value ? 'is-selected' : ''}`}
+                onClick={() => {
+                  onChange(option.value);
+                  setIsOpen(false);
+                }}
+              >
+                {option.label}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Reviews() {
+  const { reviews, fetchReviews, addReview, isLoading } = useReviewStore();
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Modal states
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [newReview, setNewReview] = useState({
+    author: '',
+    project: categories[1] as string, // Cast or explicitly type the state
+    rating: 0,
+    content: ''
+  });
+
+  const resetForm = () => {
+    setNewReview({
+      author: '',
+      project: categories[1] as string,
+      rating: 0,
+      content: ''
+    });
+    setIsSubmitted(false);
+  };
+
+  useEffect(() => {
+    fetchReviews();
+  }, [fetchReviews]);
 
   const handleScroll = () => {
     if (!scrollContainerRef.current) return;
@@ -25,15 +118,36 @@ export default function Reviews() {
   };
 
   const nextReview = () => {
-    if (activeIndex < reviews.length - 1) scrollTo(activeIndex + 1);
+    if (activeIndex < visibleReviews.length - 1) scrollTo(activeIndex + 1);
   };
 
   const prevReview = () => {
     if (activeIndex > 0) scrollTo(activeIndex - 1);
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+
+    if (!newReview.author || !newReview.content || newReview.rating === 0) {
+      return;
+    }
+    const success = await addReview({
+      ...newReview,
+      is_visible: true
+    });
+    if (success) {
+      alert('소중한 리뷰가 등록되었습니다!');
+      setIsModalOpen(false);
+      resetForm();
+    } else {
+      alert('리뷰 등록에 실패했습니다. 다시 시도해 주세요.');
+    }
+  };
+
+  const visibleReviews = reviews.filter(r => r.is_visible);
+
   const metrics = [
-    // ... (stays same)
     {
       value: "10years +",
       subtitle: "다양한 산업군, 수많은 프로젝트",
@@ -55,46 +169,12 @@ export default function Reviews() {
     }
   ];
 
-  const reviews = [
-    // ... (stays same)
-    {
-      content: "여러 에이전시를 만나봤지만, 온채움랩만큼 완성도와 디테일을 동시에 만족시킨 곳은 없었습니다. 특히 기획부터 디자인까지 완벽해서 내부 보고 때마다 자부심 있게 활용하고 있습니다.",
-      author: "@스타트업 대표",
-      project: "기업 홈페이지 리뉴얼"
-    },
-    {
-      content: "전체 흐름이 너무 매끄럽습니다. 제가 설명하지 않아도 의도를 정확하게 이해해 주시고, 프로젝트 진행하면서 쭉 함께 작업했어요. 덕분에 프로젝트가 훨씬 수월하게 진행됐어요.",
-      author: "@마케팅 담당자",
-      project: "프로모션 랜딩페이지"
-    },
-    {
-      content: "단순히 예쁘게만 만드는 게 아니라 '사용자 관점에서 논리가 어떻게 흘러야 하는지'를 잡아줘서 저희 팀도 많이 배웠어요. 다소 애매했던 기획도 전문가 입장에서 자연스럽게 정리해줘서 만족스러웠습니다.",
-      author: "@서비스 기획자",
-      project: "플랫폼 UX/UI 개선"
-    },
-    {
-      content: "복잡한 쇼핑몰 구축을 빠르고 퀄리티 있게 만들어주셔서 기한 안에 무사히 오픈했습니다. 덕분에 매출도 오르고 좋은 기운 받아갑니다. 감사합니다.",
-      author: "@커머스 대표",
-      project: "자사몰 구축"
-    },
-    {
-      content: "처음부터 끝까지 책임감 있게 챙겨주셔서 정말 편했습니다. 중간에 저희 쪽에서 누락한 자료가 있었는데 그 부분까지 스스로 체크해서 알려주시는 꼼꼼함에 감동했습니다.",
-      author: "@운영팀장",
-      project: "브랜드 사이트 제작"
-    },
-    {
-      content: "대형 플랫폼에 들어갈 랜딩페이지라 걱정이 많았는데 1도 없이 완벽하게 구현해 주셨어요. 화면 구성을 알아서 딱 잡아주시고 필요한 내용 정리해서 요청해주시니 일처리가 너무 깔끔해서 정말 만족했습니다.",
-      author: "@플랫폼 사업부",
-      project: "이벤트 랜딩페이지"
-    }
-  ];
-
   return (
     <section id="reviews" className="reviews-section">
       <div className="reviews-container">
-        
+
         {/* Header Section */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -104,7 +184,7 @@ export default function Reviews() {
           <span className="reviews-badge">
             Review!
           </span>
-          
+
           <div className="reviews-header-content">
             <div className="reviews-score-wrap">
               <div className="reviews-stars">
@@ -116,9 +196,9 @@ export default function Reviews() {
                 4.9<span className="reviews-score-max">/5</span>
               </div>
             </div>
-            
+
             <div className="reviews-separator"></div>
-            
+
             <div className="reviews-title-wrap">
               <h2 className="reviews-title-sub">
                 별처럼 쏟아지는
@@ -142,13 +222,13 @@ export default function Reviews() {
               className="metric-card"
             >
               <div className="metric-card-bg"></div>
-              
+
               <div className="metric-header">
                 <h3 className="metric-value">{metric.value}</h3>
                 <p className="metric-subtitle">{metric.subtitle}</p>
                 <h4 className="metric-title">{metric.title}</h4>
               </div>
-              
+
               <div className="metric-footer">
                 <p className="metric-desc">
                   {metric.desc}
@@ -168,132 +248,23 @@ export default function Reviews() {
         </div>
 
         {/* Desktop: Scrolling Reviews Marquee */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
-          className="reviews-marquee-wrap"
-        >
-          {/* Top Row: Left to Right */}
-          <div className="marquee-row marquee-animate-reverse">
-            <div className="marquee-group">
-              {reviews.map((review, idx) => (
-                <div
-                  key={`row1-a-${idx}`}
-                  className="review-card"
-                >
-                  <p className="review-text">
-                    "{review.content}"
-                  </p>
-                  <div className="review-footer">
-                    <div className="review-avatar">
-                      <User size={20} className="review-avatar-icon" />
-                    </div>
-                    <div>
-                      <h5 className="review-author">{review.author}</h5>
-                      <p className="review-project">{review.project}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="marquee-group">
-              {reviews.map((review, idx) => (
-                <div
-                  key={`row1-b-${idx}`}
-                  className="review-card"
-                >
-                  <p className="review-text">
-                    "{review.content}"
-                  </p>
-                  <div className="review-footer">
-                    <div className="review-avatar">
-                      <User size={20} className="review-avatar-icon" />
-                    </div>
-                    <div>
-                      <h5 className="review-author">{review.author}</h5>
-                      <p className="review-project">{review.project}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Bottom Row: Right to Left */}
-          <div className="marquee-row marquee-animate">
-            <div className="marquee-group">
-              {[...reviews].reverse().map((review, idx) => (
-                <div
-                  key={`row2-a-${idx}`}
-                  className="review-card"
-                >
-                  <p className="review-text">
-                    "{review.content}"
-                  </p>
-                  <div className="review-footer">
-                    <div className="review-avatar">
-                      <User size={20} className="review-avatar-icon" />
-                    </div>
-                    <div>
-                      <h5 className="review-author">{review.author}</h5>
-                      <p className="review-project">{review.project}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="marquee-group">
-              {[...reviews].reverse().map((review, idx) => (
-                <div
-                  key={`row2-b-${idx}`}
-                  className="review-card"
-                >
-                  <p className="review-text">
-                    "{review.content}"
-                  </p>
-                  <div className="review-footer">
-                    <div className="review-avatar">
-                      <User size={20} className="review-avatar-icon" />
-                    </div>
-                    <div>
-                      <h5 className="review-author">{review.author}</h5>
-                      <p className="review-project">{review.project}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          <div className="marquee-mask-left"></div>
-          <div className="marquee-mask-right"></div>
-        </motion.div>
-
-        {/* Mobile: Swipeable Carousel */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
-          className="mobile-carousel-wrap"
-        >
-          <div className="relative">
-            <div 
-              ref={scrollContainerRef}
-              onScroll={handleScroll}
-              className="mobile-scroll-container"
-            >
-              {reviews.map((review, idx) => (
-                <div key={idx} className="mobile-review-item">
-                  <div className="mobile-review-card">
-                    <p className="mobile-review-text">
-                      "{review.content}"
-                    </p>
+        {visibleReviews.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
+            className="reviews-marquee-wrap"
+          >
+            {/* Top Row: Left to Right */}
+            <div className="marquee-row marquee-animate-reverse">
+              <div className="marquee-group">
+                {visibleReviews.map((review, idx) => (
+                  <div key={`row1-a-${idx}`} className="review-card">
+                    <p className="review-text">"{review.content}"</p>
                     <div className="review-footer">
                       <div className="review-avatar">
-                        <User size={18} className="review-avatar-icon" />
+                        <User size={20} className="review-avatar-icon" />
                       </div>
                       <div>
                         <h5 className="review-author">{review.author}</h5>
@@ -301,40 +272,255 @@ export default function Reviews() {
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              <div className="marquee-group">
+                {visibleReviews.map((review, idx) => (
+                  <div key={`row1-b-${idx}`} className="review-card">
+                    <p className="review-text">"{review.content}"</p>
+                    <div className="review-footer">
+                      <div className="review-avatar">
+                        <User size={20} className="review-avatar-icon" />
+                      </div>
+                      <div>
+                        <h5 className="review-author">{review.author}</h5>
+                        <p className="review-project">{review.project}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <button 
-              onClick={prevReview} 
-              disabled={activeIndex === 0}
-              className="nav-btn nav-btn-prev"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <button 
-              onClick={nextReview} 
-              disabled={activeIndex === reviews.length - 1}
-              className="nav-btn nav-btn-next"
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div>
-          
-          <div className="pagination-wrap">
-            {reviews.map((_, idx) => (
-              <button 
-                key={idx}
-                onClick={() => scrollTo(idx)}
-                className={`dot-btn ${activeIndex === idx ? 'is-active' : ''}`}
-                aria-label={`Go to review ${idx + 1}`}
-              />
-            ))}
-          </div>
+            {/* Bottom Row: Right to Left */}
+            <div className="marquee-row marquee-animate">
+              <div className="marquee-group">
+                {[...visibleReviews].reverse().map((review, idx) => (
+                  <div key={`row2-a-${idx}`} className="review-card">
+                    <p className="review-text">"{review.content}"</p>
+                    <div className="review-footer">
+                      <div className="review-avatar">
+                        <User size={20} className="review-avatar-icon" />
+                      </div>
+                      <div>
+                        <h5 className="review-author">{review.author}</h5>
+                        <p className="review-project">{review.project}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="marquee-group">
+                {[...visibleReviews].reverse().map((review, idx) => (
+                  <div key={`row2-b-${idx}`} className="review-card">
+                    <p className="review-text">"{review.content}"</p>
+                    <div className="review-footer">
+                      <div className="review-avatar">
+                        <User size={20} className="review-avatar-icon" />
+                      </div>
+                      <div>
+                        <h5 className="review-author">{review.author}</h5>
+                        <p className="review-project">{review.project}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="marquee-mask-left"></div>
+            <div className="marquee-mask-right"></div>
+          </motion.div>
+        )}
+
+        {/* Mobile: Swipeable Carousel */}
+        {visibleReviews.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
+            className="mobile-carousel-wrap"
+          >
+            <div className="relative">
+              <div
+                ref={scrollContainerRef}
+                onScroll={handleScroll}
+                className="mobile-scroll-container"
+              >
+                {visibleReviews.map((review, idx) => (
+                  <div key={idx} className="mobile-review-item">
+                    <div className="mobile-review-card">
+                      <p className="mobile-review-text">"{review.content}"</p>
+                      <div className="review-footer">
+                        <div className="review-avatar">
+                          <User size={18} className="review-avatar-icon" />
+                        </div>
+                        <div>
+                          <h5 className="review-author">{review.author}</h5>
+                          <p className="review-project">{review.project}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                onClick={prevReview}
+                disabled={activeIndex === 0}
+                className="nav-btn nav-btn-prev"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                onClick={nextReview}
+                disabled={activeIndex === visibleReviews.length - 1}
+                className="nav-btn nav-btn-next"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+
+            <div className="pagination-wrap">
+              {visibleReviews.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => scrollTo(idx)}
+                  className={`dot-btn ${activeIndex === idx ? 'is-active' : ''}`}
+                  aria-label={`Go to review ${idx + 1}`}
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Action Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="reviews-action-wrap"
+        >
+          <button
+            className="write-review-btn"
+            onClick={() => {
+              resetForm();
+              setIsModalOpen(true);
+            }}
+          >
+            리뷰 작성하기
+          </button>
         </motion.div>
 
       </div>
+
+      {/* Review Write Modal */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="review-modal-overlay"
+            onClick={() => {
+              setIsModalOpen(false);
+              resetForm();
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="review-modal-content"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="review-modal-header">
+                <h3>소중한 리뷰를 들려주세요</h3>
+                <button
+                  className="modal-close-btn"
+                  onClick={() => {
+                    setIsModalOpen(false);
+                    resetForm();
+                  }}
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              <form onSubmit={handleSubmit} className="review-modal-form">
+                <div className="form-group-row">
+                  <div className="form-group">
+                    <label>작성자 <span className="required">*</span></label>
+                    <input
+                      type="text"
+                      placeholder="예) 스타트업 대표"
+                      value={newReview.author}
+                      onChange={(e) => setNewReview({ ...newReview, author: e.target.value })}
+                      className={`review-input ${isSubmitted && !newReview.author ? 'has-error' : ''}`}
+                    />
+                    {isSubmitted && !newReview.author && (
+                      <p className="form-error-msg">작성자명을 입력해주세요.</p>
+                    )}
+                  </div>
+                  <div className="form-group">
+                    <label>프로젝트 구분</label>
+                    <CustomSelect
+                      options={categories.filter(c => c !== '전체').map(c => ({ value: c, label: c }))}
+                      value={newReview.project}
+                      onChange={(val) => setNewReview({ ...newReview, project: val })}
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label>평점 <span className="required">*</span></label>
+                  <div className="rating-select">
+                    <div className={`rating-stars-wrap ${isSubmitted && newReview.rating === 0 ? 'has-error-stars' : ''}`}>
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          onClick={() => setNewReview({ ...newReview, rating: star })}
+                          className={`star-btn ${newReview.rating >= star ? 'is-active' : ''}`}
+                        >
+                          <Star size={24} fill={newReview.rating >= star ? 'currentColor' : 'none'} />
+                        </button>
+                      ))}
+                    </div>
+                    {isSubmitted && newReview.rating === 0 && (
+                      <p className="form-error-msg">평점을 선택해주세요.</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label>리뷰 내용 <span className="required">*</span></label>
+                  <textarea
+                    rows={8}
+                    placeholder="프로젝트 만족하신 내용을 텍스트로 남겨주세요"
+                    value={newReview.content}
+                    onChange={(e) => setNewReview({ ...newReview, content: e.target.value })}
+                    className={`review-textarea ${isSubmitted && !newReview.content ? 'has-error' : ''}`}
+                  ></textarea>
+                  {isSubmitted && !newReview.content && (
+                    <p className="form-error-msg">리뷰 내용을 입력해주세요.</p>
+                  )}
+                </div>
+
+                <button
+                  type="submit"
+                  className="form-submit-btn"
+                  disabled={isLoading}
+                >
+                  {isLoading ? '등록 중...' : '리뷰 등록 완료'}
+                </button>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
-
