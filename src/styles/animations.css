@@ -1,0 +1,18 @@
+/* ==========================================================================
+   🔄 애니메이션 (Animations)
+   리뷰 마키나 모달창 등에 쓰이는 움직임 애니메이션 설정 파일입니다.
+   ========================================================================== */
+
+@theme {
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 40s linear infinite;
+  
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes marquee-reverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+}

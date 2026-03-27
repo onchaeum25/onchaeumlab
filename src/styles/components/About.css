@@ -1,0 +1,239 @@
+/* About.css */
+.about-section {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+  background-color: #F8F9FA;
+  overflow: hidden;
+}
+
+.about-container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.about-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .about-header {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+}
+
+.about-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.025em;
+  color: #191919;
+}
+
+@media (min-width: 768px) {
+  .about-title {
+    font-size: 3rem;
+  }
+}
+
+.about-desc {
+  color: #5c5c5c;
+  font-size: 1.125rem;
+  line-height: 1.625;
+  max-width: 48rem;
+}
+
+.about-nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.about-nav-btn {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  border: 1px solid #d1d5db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4b5563;
+  transition: all 0.3s;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+  background: transparent;
+  cursor: pointer;
+}
+
+.about-nav-btn:hover {
+  background-color: #ffffff;
+  color: #111827;
+  border-color: #9ca3af;
+}
+
+.about-carousel-wrap {
+  width: 100%;
+  padding-left: 0.5rem;
+}
+
+@media (min-width: 1280px) {
+  .about-carousel-wrap {
+    padding-left: calc((100vw - 1280px) / 2 + 0.5rem);
+  }
+}
+
+.about-carousel {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 3rem;
+  padding-top: 1rem;
+  padding-right: 1.5rem;
+  padding-left: 1rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.about-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.about-card-wrap {
+  min-width: 320px;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 768px) {
+  .about-card-wrap {
+    min-width: 400px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-card-wrap {
+    min-width: 450px;
+  }
+}
+
+.about-card-inner {
+  position: relative;
+  height: 100%;
+  transition: transform 0.5s;
+  cursor: pointer;
+}
+
+.about-card-inner:hover {
+  transform: translateY(-0.5rem) scale(1.02);
+}
+
+.about-card-box {
+  position: relative;
+  height: 100%;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  transition: all 0.5s;
+  overflow: hidden;
+}
+
+.about-card-inner:hover .about-card-box {
+  border-color: transparent;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+}
+
+.about-card-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #232589 50%, #F0A900 50%);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.about-card-inner:hover .about-card-gradient {
+  opacity: 1;
+}
+
+.about-card-bg {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  bottom: 4px;
+  left: 4px;
+  background-color: #ffffff;
+  border-radius: 18px;
+  transition: all 0.5s;
+}
+
+.about-card-content {
+  position: relative;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  z-index: 10;
+}
+
+@media (min-width: 768px) {
+  .about-card-content {
+    padding: 2.5rem;
+  }
+}
+
+.about-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 3rem;
+}
+
+.about-card-num {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #232589;
+}
+
+@media (min-width: 768px) {
+  .about-card-num {
+    font-size: 3rem;
+  }
+}
+
+.about-card-icon {
+  opacity: 0.8;
+}
+
+.about-card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #191919;
+  margin-bottom: 0.75rem;
+}
+
+.about-card-subtitle {
+  display: inline-block;
+  background-color: #EEAB1B;
+  color: #ffffff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.about-card-text {
+  color: #5c5c5c;
+  line-height: 1.625;
+  font-size: 0.875rem;
+}
+
+@media (min-width: 768px) {
+  .about-card-text {
+    font-size: 1rem;
+  }
+}

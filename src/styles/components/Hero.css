@@ -1,0 +1,169 @@
+/* ==========================================================================
+   Hero 섹션 전용 스타일 (메인 배너)
+   ========================================================================== */
+
+/* 1. 히어로 전체 감싸는 배경 영역 */
+.hero-wrapper {
+  position: relative;
+  padding-top: 8rem;
+  padding-bottom: 5rem;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background-color: #EBE3D9;
+  background-image: url('/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* 2. 어두운 오버레이 막 (텍스트 가독성 향상) */
+.hero-overlay {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(1px);
+  z-index: 0;
+}
+
+/* 3. 히어로 내부 박스 정렬 */
+.hero-container {
+  max-width: 80rem; /* max-w-7xl */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* 4. 작은 상단 타이틀 (영어 캡션) */
+.hero-subtitle {
+  color: var(--color-point);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+/* 5. 메인 큰 제목 (당신의 브랜드가 빛나는 공간) */
+.hero-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #191919;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.025em;
+}
+
+/* 6. 내용 텍스트 (기획부터 디자인 개발까지) */
+.hero-description {
+  font-size: 1.125rem;
+  color: #5c5c5c;
+  font-weight: 500;
+  margin-bottom: 2.5rem;
+  max-width: 48rem; /* max-w-3xl */
+  line-height: 1.625;
+  word-break: keep-all;
+}
+
+/* 7. 버튼 컨테이너 (포트폴리오 보기 등) */
+.hero-button-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 2rem;
+}
+
+/* 8. 주요 버튼 스타일 (포트폴리오 보기) */
+.hero-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-point);
+  color: #ffffff;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+  box-shadow: 0 10px 15px -3px rgba(18, 17, 75, 0.2); 
+}
+.hero-btn-primary:hover {
+  background-color: #1a1b66;
+}
+
+/* 9. 서브 버튼 스타일 (프로젝트 문의하기) */
+.hero-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  color: #1f2937; 
+  border: 1px solid #e5e7eb; 
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+.hero-btn-secondary:hover {
+  background-color: #f9fafb;
+}
+
+/* 10. SNS 둥근 아이콘 버튼 (코드상에선 삭제됨) */
+.hero-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  background-color: var(--color-point);
+  color: #ffffff;
+  transition: background-color 0.2s ease-in-out;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+.hero-btn-icon:hover {
+  background-color: #1a1b66;
+}
+
+/* ==========================================================================
+   반응형 미디어 쿼리 (Responsive Rules)
+   ========================================================================== */
+
+/* 태블릿 이상 (Tailwind md: 768px) */
+@media (min-width: 768px) {
+  .hero-wrapper {
+    padding-top: 12rem;
+    padding-bottom: 8rem;
+  }
+  .hero-overlay {
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: none;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  .hero-title {
+    font-size: 3rem;
+    line-height: 1;
+  }
+  .hero-description {
+    font-size: 1.25rem;
+  }
+}
+
+/* 데스크톱 이상 (Tailwind lg: 1024px) */
+@media (min-width: 1024px) {
+  .hero-title {
+    font-size: 3.75rem;
+  }
+}
