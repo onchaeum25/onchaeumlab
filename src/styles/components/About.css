@@ -1,13 +1,14 @@
 /* About.css */
 .about-section {
-  padding-top: 6rem;
+  padding-top: 7.5rem;
   padding-bottom: 6rem;
   background-color: #F8F9FA;
   overflow: hidden;
+  scroll-snap-align: start;
 }
 
 .about-container {
-  max-width: 80rem;
+  max-width: 94rem; /* wider layout for PC */
   margin: 0 auto;
   padding: 0 1.5rem;
 }
@@ -79,9 +80,9 @@
   padding-left: 0.5rem;
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1504px) {
   .about-carousel-wrap {
-    padding-left: calc((100vw - 1280px) / 2 + 0.5rem);
+    padding-left: calc((100vw - 1504px) / 2 + 0.5rem);
   }
 }
 

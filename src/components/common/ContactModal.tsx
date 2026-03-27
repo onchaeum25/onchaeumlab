@@ -1,6 +1,7 @@
 import { X, Send, ChevronDown } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import { useInquiryStore } from '../../store/useInquiryStore';
+import '../../styles/common.css';
 
 interface Option {
   value: string;
@@ -30,53 +31,38 @@ function CustomSelect({ options, value, onChange, placeholder = "선택해주세
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const headerContent = (
-    <>
-      <span className={`block truncate ${selectedOption ? 'text-gray-900' : 'text-gray-500'}`}>
-        {selectedOption ? selectedOption.label : placeholder}
-      </span>
-      <ChevronDown className={`w-5 h-5 shrink-0 text-gray-400 transition-transform duration-300 ${isOpen ? 'rotate-180 text-point' : ''}`} />
-    </>
-  );
-
   return (
-    <div ref={selectRef} className="relative w-full">
+    <div ref={selectRef} className="custom-select-wrap">
       {/* Invisible placeholder to maintain layout space */}
-      <div className="w-full px-4 py-3 border border-transparent opacity-0 pointer-events-none flex justify-between items-center">
-        {headerContent}
+      <div className="custom-select-ghost">
+        <span className="truncate">
+          {selectedOption ? selectedOption.label : placeholder}
+        </span>
+        <ChevronDown className="w-5 h-5" />
       </div>
 
       {/* Actual expanding container */}
       <div 
-        className={`absolute top-0 left-0 w-full bg-white transition-all duration-300 overflow-hidden ${
-          isOpen 
-            ? 'border-point ring-1 ring-point rounded-lg shadow-xl z-50' 
-            : 'border-gray-200 border rounded-lg z-10 hover:border-point'
-        }`}
+        className={`custom-select-main ${isOpen ? 'is-open' : ''}`}
       >
         {/* Header */}
         <div 
-          className="w-full px-4 py-3 cursor-pointer flex justify-between items-center bg-white"
+          className="custom-select-header"
           onClick={() => setIsOpen(!isOpen)}
         >
-          {headerContent}
+          <span className={selectedOption ? 'custom-select-value' : 'custom-select-placeholder'}>
+            {selectedOption ? selectedOption.label : placeholder}
+          </span>
+          <ChevronDown className="custom-select-icon" />
         </div>
         
         {/* Options */}
-        <div 
-          className={`transition-all duration-300 ease-in-out bg-white ${
-            isOpen ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'
-          }`}
-        >
-          <div className="border-t border-gray-100 overflow-y-auto max-h-60 py-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="custom-select-options">
+          <div className="custom-select-options-inner">
             {options.map((option) => (
               <div
                 key={option.value}
-                className={`px-4 py-3 cursor-pointer transition-colors ${
-                  value === option.value 
-                    ? 'bg-indigo-50/50 text-point font-medium' 
-                    : 'text-gray-700 hover:bg-gray-50'
-                }`}
+                className={`custom-select-option ${value === option.value ? 'is-selected' : ''}`}
                 onClick={() => {
                   onChange(option.value);
                   setIsOpen(false);
@@ -209,70 +195,70 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 sm:p-6 text-left">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+    <div className="modal-overlay">
+      <div className="modal-bg" onClick={onClose}></div>
+      <div className="modal-content">
         <button 
           onClick={onClose}
-          className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors z-10"
+          className="modal-close-btn"
         >
           <X size={24} />
         </button>
 
         {/* Header - Fixed */}
-        <div className="px-8 pt-8 sm:px-10 sm:pt-10 pb-6 shrink-0 border-b border-gray-100">
+        <div className="modal-header">
           <div className="text-center">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 text-center">무료견적받기</h2>
-            <p className="text-gray-500 text-sm sm:text-base text-center">프로젝트에 대한 간단한 정보를 남겨주시면 빠르게 연락드리겠습니다.</p>
+            <h2 className="modal-title">무료견적받기</h2>
+            <p className="modal-subtitle">프로젝트에 대한 간단한 정보를 남겨주시면 빠르게 연락드리겠습니다.</p>
           </div>
         </div>
 
         {/* Form - Scrollable */}
-        <div className="px-8 sm:px-10 pb-8 sm:pb-10 pt-6 overflow-y-auto flex-1">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="modal-body">
+          <form className="contact-modal-form" onSubmit={handleSubmit}>
+            <div className="form-row">
               {/* Name */}
-              <div className="space-y-2">
-                <label className="block text-sm font-bold text-gray-900">이름 / 회사명 <span className="text-point">*</span></label>
+              <div className="form-item">
+                <label className="form-item-label">이름 / 회사명 <span className="required">*</span></label>
                 <input 
                   type="text" 
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="홍길동 / (주)온채움" 
-                  className={`w-full px-4 py-3 rounded-lg border ${errors.name ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-200'} focus:border-point focus:ring-1 focus:ring-point outline-none transition-all`}
+                  className={`form-item-input ${errors.name ? 'has-error' : ''}`}
                 />
-                {errors.name && <p className="text-red-500 text-xs font-semibold">{errors.name}</p>}
+                {errors.name && <p className="form-error-msg">{errors.name}</p>}
               </div>
               {/* Email */}
-              <div className="space-y-2">
-                <label className="block text-sm font-bold text-gray-900">이메일 <span className="text-point">*</span></label>
+              <div className="form-item">
+                <label className="form-item-label">이메일 <span className="required">*</span></label>
                 <input 
                   type="email" 
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="example@email.com" 
-                  className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-200'} focus:border-point focus:ring-1 focus:ring-point outline-none transition-all`}
+                  className={`form-item-input ${errors.email ? 'has-error' : ''}`}
                 />
-                {errors.email && <p className="text-red-500 text-xs font-semibold">{errors.email}</p>}
+                {errors.email && <p className="form-error-msg">{errors.email}</p>}
               </div>
               {/* Phone */}
-              <div className="space-y-2">
-                <label className="block text-sm font-bold text-gray-900">연락처 <span className="text-point">*</span></label>
+              <div className="form-item">
+                <label className="form-item-label">연락처 <span className="required">*</span></label>
                 <input 
                   type="tel" 
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="010-0000-0000" 
-                  className={`w-full px-4 py-3 rounded-lg border ${errors.phone ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-200'} focus:border-point focus:ring-1 focus:ring-point outline-none transition-all`}
+                  className={`form-item-input ${errors.phone ? 'has-error' : ''}`}
                 />
-                {errors.phone && <p className="text-red-500 text-xs font-semibold">{errors.phone}</p>}
+                {errors.phone && <p className="form-error-msg">{errors.phone}</p>}
               </div>
               {/* Budget */}
-              <div className="space-y-2">
-                <label className="block text-sm font-bold text-gray-900">예산</label>
+              <div className="form-item">
+                <label className="form-item-label">예산</label>
                 <CustomSelect 
                   options={budgetOptions} 
                   value={formData.budget} 
@@ -282,36 +268,36 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             </div>
 
             {/* Service */}
-            <div className="space-y-2">
-              <label className="block text-sm font-bold text-gray-900">요청서비스 <span className="text-point">*</span></label>
-              <div className={errors.service ? 'ring-1 ring-red-500 rounded-lg' : ''}>
+            <div className="form-item">
+              <label className="form-item-label">요청서비스 <span className="required">*</span></label>
+              <div className={errors.service ? 'rounded-lg ring-1 ring-red-500' : ''}>
                 <CustomSelect 
                   options={serviceOptions} 
                   value={formData.service} 
                   onChange={(val) => handleSelectChange('service', val)} 
                 />
               </div>
-              {errors.service && <p className="text-red-500 text-xs font-semibold">{errors.service}</p>}
+              {errors.service && <p className="form-error-msg">{errors.service}</p>}
             </div>
 
             {/* Message */}
-            <div className="space-y-2">
-              <label className="block text-sm font-bold text-gray-900">문의 내용 <span className="text-point">*</span></label>
+            <div className="form-item">
+              <label className="form-item-label">문의 내용 <span className="required">*</span></label>
               <textarea 
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
                 rows={4}
                 placeholder="프로젝트에 대한 간단한 설명을 남겨주세요." 
-                className={`w-full px-4 py-3 rounded-lg border ${errors.message ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-200'} focus:border-point focus:ring-1 focus:ring-point outline-none transition-all resize-none`}
+                className={`form-item-textarea ${errors.message ? 'has-error' : ''} resize-none`}
               ></textarea>
-              {errors.message && <p className="text-red-500 text-xs font-semibold">{errors.message}</p>}
+              {errors.message && <p className="form-error-msg">{errors.message}</p>}
             </div>
 
             {/* Submit */}
             <button 
               type="submit"
-              className="w-full bg-[#12114B] hover:bg-[#1a1866] text-white font-bold py-4 rounded-lg flex items-center justify-center gap-2 transition-colors mt-4"
+              className="form-submit-btn"
             >
               문의하기 <Send size={18} />
             </button>

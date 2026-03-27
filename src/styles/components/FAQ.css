@@ -1,13 +1,15 @@
 /* FAQ.css */
 .faq-section {
-  padding-top: 8rem;
+  padding-top: 7.5rem;
   padding-bottom: 8rem;
   background-color: #f8f9fa;
   position: relative;
+  scroll-snap-align: start;
 }
 
 .faq-container {
-  max-width: 80rem;
+  max-width: 94rem;
+  /* wider layout for PC */
   margin: 0 auto;
   padding: 0 1rem;
   display: flex;
@@ -140,7 +142,9 @@
 .faq-item {
   border: 1px solid #e5e7eb;
   background-color: #ffffff;
+  border-radius: 1rem;
   transition: all 0.3s;
+  overflow: hidden;
 }
 
 .faq-item.is-open {
@@ -228,9 +232,10 @@
 }
 
 .faq-footer {
-  background-color: #1a1a1a;
+  background-color: #232589;
   color: #ffffff;
   padding: 2.5rem;
+  border-radius: 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -255,16 +260,19 @@
 }
 
 .faq-footer-btn {
-  background-color: #232589;
+  background-color: #EEAB1B;
   color: #ffffff;
-  padding: 0.75rem 2rem;
+  padding: 0.875rem 2.5rem;
   border-radius: 9999px;
   font-weight: 700;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
   display: inline-block;
   text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .faq-footer-btn:hover {
-  background-color: #232589;
+  background-color: #EEAB1B;
+  color: #111111;
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3);
 }

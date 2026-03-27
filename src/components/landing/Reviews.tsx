@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { motion } from 'motion/react';
 import { Star, User, ChevronLeft, ChevronRight } from 'lucide-react';
+import '../../styles/components/Reviews.css';
 
 export default function Reviews() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -32,6 +33,7 @@ export default function Reviews() {
   };
 
   const metrics = [
+    // ... (stays same)
     {
       value: "10years +",
       subtitle: "다양한 산업군, 수많은 프로젝트",
@@ -54,6 +56,7 @@ export default function Reviews() {
   ];
 
   const reviews = [
+    // ... (stays same)
     {
       content: "여러 에이전시를 만나봤지만, 온채움랩만큼 완성도와 디테일을 동시에 만족시킨 곳은 없었습니다. 특히 기획부터 디자인까지 완벽해서 내부 보고 때마다 자부심 있게 활용하고 있습니다.",
       author: "@스타트업 대표",
@@ -87,8 +90,8 @@ export default function Reviews() {
   ];
 
   return (
-    <section id="reviews" className="py-24 bg-[#F8F9FA]">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="reviews" className="reviews-section">
+      <div className="reviews-container">
         
         {/* Header Section */}
         <motion.div 
@@ -96,31 +99,31 @@ export default function Reviews() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="flex flex-col items-center mb-16"
+          className="reviews-header-wrap"
         >
-          <span className="bg-sub text-gray-900 text-xs font-bold px-4 py-1.5 rounded-full mb-8">
+          <span className="reviews-badge">
             Review!
           </span>
           
-          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8">
-            <div className="flex flex-col items-center md:items-end">
-              <div className="flex text-sub mb-2">
+          <div className="reviews-header-content">
+            <div className="reviews-score-wrap">
+              <div className="reviews-stars">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} fill="currentColor" size={24} className="text-sub" />
+                  <Star key={i} fill="currentColor" size={24} />
                 ))}
               </div>
-              <div className="text-6xl md:text-7xl font-black text-gray-900 tracking-tighter leading-none">
-                4.9<span className="text-4xl md:text-5xl text-gray-400 font-bold">/5</span>
+              <div className="reviews-score-main">
+                4.9<span className="reviews-score-max">/5</span>
               </div>
             </div>
             
-            <div className="h-16 w-px bg-gray-300 hidden md:block"></div>
+            <div className="reviews-separator"></div>
             
-            <div className="flex flex-col items-center md:items-start text-center md:text-left">
-              <h2 className="text-xl md:text-2xl font-bold text-point mb-2">
+            <div className="reviews-title-wrap">
+              <h2 className="reviews-title-sub">
                 별처럼 쏟아지는
               </h2>
-              <h3 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+              <h3 className="reviews-title-main">
                 Customer Review!
               </h3>
             </div>
@@ -128,7 +131,7 @@ export default function Reviews() {
         </motion.div>
 
         {/* Dark Metrics Cards */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="reviews-metrics-grid">
           {metrics.map((metric, idx) => (
             <motion.div
               key={idx}
@@ -136,26 +139,25 @@ export default function Reviews() {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: idx * 0.2, ease: "easeOut" }}
-              className="bg-[#111111] text-white p-8 md:p-10 rounded-[2rem] flex flex-col h-full relative overflow-hidden group"
+              className="metric-card"
             >
-              {/* Subtle background noise/gradient effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="metric-card-bg"></div>
               
-              <div className="relative z-10 flex-grow">
-                <h3 className="text-5xl font-bold mb-6 tracking-tighter">{metric.value}</h3>
-                <p className="text-gray-400 text-sm mb-1">{metric.subtitle}</p>
-                <h4 className="text-xl font-bold mb-8">{metric.title}</h4>
+              <div className="metric-header">
+                <h3 className="metric-value">{metric.value}</h3>
+                <p className="metric-subtitle">{metric.subtitle}</p>
+                <h4 className="metric-title">{metric.title}</h4>
               </div>
               
-              <div className="relative z-10 mt-auto pt-8 border-t border-white/10">
-                <p className="text-gray-400 text-sm leading-relaxed">
+              <div className="metric-footer">
+                <p className="metric-desc">
                   {metric.desc}
                 </p>
                 {metric.showAvatars && (
-                  <div className="flex mt-6">
+                  <div className="avatar-group">
                     {[...Array(4)].map((_, i) => (
-                      <div key={i} className={`w-10 h-10 rounded-full bg-gray-800 border-2 border-[#111] flex items-center justify-center ${i !== 0 ? '-ml-3' : ''}`}>
-                        <User size={16} className="text-gray-400" />
+                      <div key={i} className="avatar-item">
+                        <User size={16} className="avatar-icon" />
                       </div>
                     ))}
                   </div>
@@ -171,48 +173,47 @@ export default function Reviews() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
-          className="hidden md:block relative overflow-hidden group py-4"
-          style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)' }}
+          className="reviews-marquee-wrap"
         >
           {/* Top Row: Left to Right */}
-          <div className="flex w-max animate-marquee-reverse group-hover:[animation-play-state:paused] mb-6">
-            <div className="flex gap-6 pr-6">
+          <div className="marquee-row marquee-animate-reverse">
+            <div className="marquee-group">
               {reviews.map((review, idx) => (
                 <div
                   key={`row1-a-${idx}`}
-                  className="w-[320px] md:w-[400px] flex-shrink-0 bg-white p-8 rounded-[2rem] shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 flex flex-col justify-between"
+                  className="review-card"
                 >
-                  <p className="text-gray-700 leading-relaxed mb-8">
+                  <p className="review-text">
                     "{review.content}"
                   </p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                      <User size={20} className="text-gray-500" />
+                  <div className="review-footer">
+                    <div className="review-avatar">
+                      <User size={20} className="review-avatar-icon" />
                     </div>
                     <div>
-                      <h5 className="font-bold text-gray-900 text-sm">{review.author}</h5>
-                      <p className="text-gray-500 text-xs mt-0.5">{review.project}</p>
+                      <h5 className="review-author">{review.author}</h5>
+                      <p className="review-project">{review.project}</p>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-            <div className="flex gap-6 pr-6">
+            <div className="marquee-group">
               {reviews.map((review, idx) => (
                 <div
                   key={`row1-b-${idx}`}
-                  className="w-[320px] md:w-[400px] flex-shrink-0 bg-white p-8 rounded-[2rem] shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 flex flex-col justify-between"
+                  className="review-card"
                 >
-                  <p className="text-gray-700 leading-relaxed mb-8">
+                  <p className="review-text">
                     "{review.content}"
                   </p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                      <User size={20} className="text-gray-500" />
+                  <div className="review-footer">
+                    <div className="review-avatar">
+                      <User size={20} className="review-avatar-icon" />
                     </div>
                     <div>
-                      <h5 className="font-bold text-gray-900 text-sm">{review.author}</h5>
-                      <p className="text-gray-500 text-xs mt-0.5">{review.project}</p>
+                      <h5 className="review-author">{review.author}</h5>
+                      <p className="review-project">{review.project}</p>
                     </div>
                   </div>
                 </div>
@@ -221,44 +222,44 @@ export default function Reviews() {
           </div>
 
           {/* Bottom Row: Right to Left */}
-          <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
-            <div className="flex gap-6 pr-6">
+          <div className="marquee-row marquee-animate">
+            <div className="marquee-group">
               {[...reviews].reverse().map((review, idx) => (
                 <div
                   key={`row2-a-${idx}`}
-                  className="w-[320px] md:w-[400px] flex-shrink-0 bg-white p-8 rounded-[2rem] shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 flex flex-col justify-between"
+                  className="review-card"
                 >
-                  <p className="text-gray-700 leading-relaxed mb-8">
+                  <p className="review-text">
                     "{review.content}"
                   </p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                      <User size={20} className="text-gray-500" />
+                  <div className="review-footer">
+                    <div className="review-avatar">
+                      <User size={20} className="review-avatar-icon" />
                     </div>
                     <div>
-                      <h5 className="font-bold text-gray-900 text-sm">{review.author}</h5>
-                      <p className="text-gray-500 text-xs mt-0.5">{review.project}</p>
+                      <h5 className="review-author">{review.author}</h5>
+                      <p className="review-project">{review.project}</p>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-            <div className="flex gap-6 pr-6">
+            <div className="marquee-group">
               {[...reviews].reverse().map((review, idx) => (
                 <div
                   key={`row2-b-${idx}`}
-                  className="w-[320px] md:w-[400px] flex-shrink-0 bg-white p-8 rounded-[2rem] shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 flex flex-col justify-between"
+                  className="review-card"
                 >
-                  <p className="text-gray-700 leading-relaxed mb-8">
+                  <p className="review-text">
                     "{review.content}"
                   </p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                      <User size={20} className="text-gray-500" />
+                  <div className="review-footer">
+                    <div className="review-avatar">
+                      <User size={20} className="review-avatar-icon" />
                     </div>
                     <div>
-                      <h5 className="font-bold text-gray-900 text-sm">{review.author}</h5>
-                      <p className="text-gray-500 text-xs mt-0.5">{review.project}</p>
+                      <h5 className="review-author">{review.author}</h5>
+                      <p className="review-project">{review.project}</p>
                     </div>
                   </div>
                 </div>
@@ -266,9 +267,8 @@ export default function Reviews() {
             </div>
           </div>
           
-          {/* Gradient Masks for smooth fading edges */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-12 md:w-32 bg-gradient-to-r from-[#F8F9FA] to-transparent"></div>
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-12 md:w-32 bg-gradient-to-l from-[#F8F9FA] to-transparent"></div>
+          <div className="marquee-mask-left"></div>
+          <div className="marquee-mask-right"></div>
         </motion.div>
 
         {/* Mobile: Swipeable Carousel */}
@@ -277,27 +277,27 @@ export default function Reviews() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
-          className="md:hidden relative mt-8 -mx-6"
+          className="mobile-carousel-wrap"
         >
           <div className="relative">
             <div 
               ref={scrollContainerRef}
               onScroll={handleScroll}
-              className="flex gap-4 overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] py-6 px-6"
+              className="mobile-scroll-container"
             >
               {reviews.map((review, idx) => (
-                <div key={idx} className="w-[calc(100vw-3rem)] flex-shrink-0 snap-center">
-                  <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100 flex flex-col h-full min-h-[260px] justify-between">
-                    <p className="text-gray-700 leading-relaxed mb-8 text-sm">
+                <div key={idx} className="mobile-review-item">
+                  <div className="mobile-review-card">
+                    <p className="mobile-review-text">
                       "{review.content}"
                     </p>
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                        <User size={18} className="text-gray-500" />
+                    <div className="review-footer">
+                      <div className="review-avatar">
+                        <User size={18} className="review-avatar-icon" />
                       </div>
                       <div>
-                        <h5 className="font-bold text-gray-900 text-sm">{review.author}</h5>
-                        <p className="text-gray-500 text-xs mt-0.5">{review.project}</p>
+                        <h5 className="review-author">{review.author}</h5>
+                        <p className="review-project">{review.project}</p>
                       </div>
                     </div>
                   </div>
@@ -308,26 +308,25 @@ export default function Reviews() {
             <button 
               onClick={prevReview} 
               disabled={activeIndex === 0}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-2 bg-white shadow-md border border-gray-100 rounded-full text-gray-800 disabled:opacity-0 transition-opacity"
+              className="nav-btn nav-btn-prev"
             >
               <ChevronLeft size={20} />
             </button>
             <button 
               onClick={nextReview} 
               disabled={activeIndex === reviews.length - 1}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-2 bg-white shadow-md border border-gray-100 rounded-full text-gray-800 disabled:opacity-0 transition-opacity"
+              className="nav-btn nav-btn-next"
             >
               <ChevronRight size={20} />
             </button>
           </div>
           
-          {/* Pagination Dots */}
-          <div className="flex justify-center items-center gap-2 mt-2">
+          <div className="pagination-wrap">
             {reviews.map((_, idx) => (
               <button 
                 key={idx}
                 onClick={() => scrollTo(idx)}
-                className={`h-2 rounded-full transition-all duration-300 ${activeIndex === idx ? 'bg-point w-6' : 'bg-gray-300 w-2'}`}
+                className={`dot-btn ${activeIndex === idx ? 'is-active' : ''}`}
                 aria-label={`Go to review ${idx + 1}`}
               />
             ))}
@@ -338,3 +337,4 @@ export default function Reviews() {
     </section>
   );
 }
+

@@ -7,7 +7,7 @@ const navLinks = [
   { name: '회사소개', href: '#about' },
   { name: '포트폴리오', href: '#portfolio' },
   { name: '프로젝트 후기', href: '#reviews' },
-  { name: 'FAQ', href: '#faq' },
+  { name: '고객센터', href: '#faq' },
 ];
 
 export default function Header() {
@@ -18,7 +18,7 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
-      
+
       // Clear active link if scrolled to the very top
       if (window.scrollY < 100) {
         setActiveLink('');
@@ -68,14 +68,14 @@ export default function Header() {
     e.preventDefault();
     setActiveLink(name);
     setIsMobileMenuOpen(false);
-    
+
     const targetId = href.replace('#', '');
     const element = document.getElementById(targetId);
     if (element) {
       const headerOffset = 80;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-  
+
       window.scrollTo({
         top: offsetPosition,
         behavior: 'smooth'
@@ -98,9 +98,9 @@ export default function Header() {
           {/* Desktop Nav */}
           <nav className="header-desktop-nav">
             {navLinks.map((link) => (
-              <a 
-                key={link.name} 
-                href={link.href} 
+              <a
+                key={link.name}
+                href={link.href}
                 onClick={(e) => handleNavClick(e, link.href, link.name)}
                 className={`header-nav-link ${activeLink === link.name ? 'is-active' : ''}`}
               >
@@ -118,8 +118,8 @@ export default function Header() {
         </div>
 
         {/* Mobile Menu Toggle */}
-        <button 
-          className="header-mobile-btn" 
+        <button
+          className="header-mobile-btn"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}

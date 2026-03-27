@@ -5,9 +5,10 @@
 /* 1. 히어로 전체 감싸는 배경 영역 */
 .hero-wrapper {
   position: relative;
-  padding-top: 8rem;
+  padding-top: 7.5rem;
   padding-bottom: 5rem;
   overflow: hidden;
+  scroll-snap-align: start;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -18,18 +19,18 @@
   background-repeat: no-repeat;
 }
 
-/* 2. 어두운 오버레이 막 (텍스트 가독성 향상) */
+/* 2. 어두운 오버레이 막 (사용자 요청으로 제거: 투명하게 설정) */
 .hero-overlay {
   position: absolute;
   top: 0; right: 0; bottom: 0; left: 0;
-  background-color: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(1px);
+  background-color: transparent;
+  backdrop-filter: none;
   z-index: 0;
 }
 
 /* 3. 히어로 내부 박스 정렬 */
 .hero-container {
-  max-width: 80rem; /* max-w-7xl */
+  max-width: 94rem; /* wider layout for PC */
   margin-left: auto;
   margin-right: auto;
   padding-left: 1.5rem;
@@ -64,12 +65,17 @@
 }
 
 /* 6. 내용 텍스트 (기획부터 디자인 개발까지) */
+.hero-content-inner {
+  max-width: 48rem; /* max-w-3xl */
+  position: relative;
+  z-index: 10;
+}
+
 .hero-description {
   font-size: 1.125rem;
   color: #5c5c5c;
   font-weight: 500;
   margin-bottom: 2.5rem;
-  max-width: 48rem; /* max-w-3xl */
   line-height: 1.625;
   word-break: keep-all;
 }
@@ -146,7 +152,7 @@
     padding-bottom: 8rem;
   }
   .hero-overlay {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: transparent;
     backdrop-filter: none;
   }
   .hero-subtitle {

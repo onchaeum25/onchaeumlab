@@ -14,7 +14,7 @@ import FloatingButtons from '../components/common/FloatingButtons';
 const LandingPage: React.FC = () => {
   return (
     <>
-      <div className="min-h-screen bg-white selection:bg-point/20 selection:text-point overflow-x-hidden">
+      <div className="landing-layout">
         <Header />
         <main>
           <Hero />
@@ -24,7 +24,6 @@ const LandingPage: React.FC = () => {
           <Portfolio />
           <Reviews />
           <FAQ />
-
         </main>
         <Footer />
       </div>

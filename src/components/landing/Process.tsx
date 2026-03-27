@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Lightbulb, Layout, Code2, Settings, Rocket } from 'lucide-react';
+import '../../styles/components/Process.css';
 
 export default function Process() {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
   const [isHovered, setIsHovered] = useState(false);
 
   const steps = [
+    // ... (stays same)
     {
       icon: <Lightbulb size={32} />,
       title: "서비스 기획",
@@ -48,8 +50,8 @@ export default function Process() {
   }, [isHovered, steps.length]);
 
   return (
-    <section className="py-24 bg-[#1a1a1a] text-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="process-section">
+      <div className="process-container">
         
         {/* Header */}
         <motion.div 
@@ -57,12 +59,12 @@ export default function Process() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="mb-16 text-center"
+          className="process-header"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+          <h2 className="process-title">
             Production Process
           </h2>
-          <p className="text-[#ababab] text-lg leading-relaxed max-w-3xl mx-auto">
+          <p className="process-desc">
             웹사이트 제작에 익숙하지 않아도, 체계적인 제작 과정을 통해<br className="hidden md:block" />
             온채움랩은 클라이언트의 비즈니스를 성공으로 이끌어드립니다.
           </p>
@@ -70,7 +72,7 @@ export default function Process() {
 
         {/* Process Cards */}
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 py-4"
+          className="process-grid"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
@@ -96,7 +98,7 @@ export default function Process() {
                   transition: { duration: 0.5, ease: "easeOut" } 
                 }
               }}
-              className="relative flex"
+              className="process-item"
               onMouseEnter={() => {
                 setActiveIndex(idx);
                 setIsHovered(true);
@@ -104,19 +106,15 @@ export default function Process() {
               onMouseLeave={() => setIsHovered(false)}
             >
               <div 
-                className={`bg-[#2a2a2a] rounded-2xl p-8 w-full transition-all duration-500 ease-out flex flex-col ${
-                  isActive 
-                    ? 'border-2 border-[#EEAB1B] scale-105 shadow-[0_10px_30px_rgba(238,171,27,0.15)] z-10' 
-                    : 'border-2 border-white/5 scale-100 z-0'
-                }`}
+                className={`process-card ${isActive ? 'is-active' : ''}`}
               >
-                <div className="text-[#EEAB1B] mb-6 transition-transform duration-500">
+                <div className="process-card-icon">
                   {step.icon}
                 </div>
-                <h3 className="text-xl font-bold mb-4 text-white">
+                <h3 className="process-card-title">
                   {step.title}
                 </h3>
-                <p className="text-gray-400 text-sm leading-relaxed">
+                <p className="process-card-desc">
                   {step.desc}
                 </p>
               </div>
@@ -128,7 +126,7 @@ export default function Process() {
                     hidden: { opacity: 0, x: -10 },
                     visible: { opacity: 1, x: 0, transition: { duration: 0.3, delay: 0.4 } }
                   }}
-                  className="hidden lg:flex absolute top-1/2 left-full ml-3 -translate-x-1/2 -translate-y-1/2 z-10 text-[#EEAB1B]"
+                  className="process-connector"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 18L15 12L9 6V18Z" />
@@ -143,3 +141,4 @@ export default function Process() {
     </section>
   );
 }
+

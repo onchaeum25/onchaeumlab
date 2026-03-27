@@ -1,0 +1,125 @@
+/* Process.css */
+.process-section {
+  padding-top: 7.5rem;
+  padding-bottom: 6rem;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  overflow: hidden;
+  scroll-snap-align: start;
+}
+
+.process-container {
+  max-width: 94rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.process-header {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.process-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.025em;
+}
+
+@media (min-width: 768px) {
+  .process-title {
+    font-size: 3rem;
+  }
+}
+
+.process-desc {
+  color: #ababab;
+  font-size: 1.125rem;
+  line-height: 1.625;
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.process-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .process-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .process-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.process-item {
+  position: relative;
+  display: flex;
+}
+
+.process-card {
+  background-color: #2a2a2a;
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 100%;
+  transition: all 0.5s ease-out;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  scale: 1;
+  z-index: 0;
+}
+
+.process-card.is-active {
+  border-color: #EEAB1B;
+  scale: 1.05;
+  box-shadow: 0 10px 30px rgba(238, 171, 27, 0.15);
+  z-index: 10;
+}
+
+.process-card-icon {
+  color: #EEAB1B;
+  margin-bottom: 1.5rem;
+  transition: transform 0.5s;
+}
+
+.process-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.process-card-desc {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  line-height: 1.625;
+}
+
+.process-connector {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-left: 0.75rem;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  color: #EEAB1B;
+}
+
+@media (min-width: 1024px) {
+  .process-connector {
+    display: flex;
+  }
+}

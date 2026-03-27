@@ -10,7 +10,7 @@ export default function About() {
     if (scrollRef.current) {
       const { current } = scrollRef;
       const scrollAmount = direction === 'left' ? -400 : 400;
-      
+
       // Check for boundaries to create a looping effect
       if (direction === 'right' && current.scrollLeft + current.clientWidth >= current.scrollWidth - 10) {
         // Reached the end, loop back to start
@@ -66,18 +66,17 @@ export default function About() {
   return (
     <section id="about" className="about-section">
       <div className="about-container">
-        
+
         {/* Header Section */}
         <div className="about-header">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: "easeOut" }}
           >
             <h2 className="about-title">
-              OnchaeumLAB<br />
-              Own Way
+              OnchaeumLAB Own Way
             </h2>
             <p className="about-desc">
               온채움랩만의 5가지 브랜드 원칙이 당신의 성공을 만듭니다.
@@ -85,21 +84,21 @@ export default function About() {
           </motion.div>
 
           {/* Navigation Buttons */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.2 }}
             className="about-nav"
           >
-            <button 
+            <button
               onClick={() => scroll('left')}
               className="about-nav-btn"
               aria-label="Previous"
             >
               <ChevronLeft size={24} />
             </button>
-            <button 
+            <button
               onClick={() => scroll('right')}
               className="about-nav-btn"
               aria-label="Next"
@@ -111,59 +110,59 @@ export default function About() {
       </div>
 
       {/* Cards Carousel */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, x: 200 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 1, ease: "easeOut" }}
         className="about-carousel-wrap"
       >
-        <div 
+        <div
           ref={scrollRef}
           className="about-carousel"
         >
-            {features.map((feature, idx) => (
-              <div
-                key={idx}
-                className="about-card-wrap"
-              >
-                <div className="about-card-inner">
-                  <div className="about-card-box">
-                    {/* Gradient Background (shows as border) */}
-                    <div className="about-card-gradient"></div>
-                    
-                    {/* Inner White Background */}
-                    <div className="about-card-bg"></div>
+          {features.map((feature, idx) => (
+            <div
+              key={idx}
+              className="about-card-wrap"
+            >
+              <div className="about-card-inner">
+                <div className="about-card-box">
+                  {/* Gradient Background (shows as border) */}
+                  <div className="about-card-gradient"></div>
 
-                    {/* Content */}
-                    <div className="about-card-content">
-                      <div className="about-card-header">
-                    <span className="about-card-num">
-                      {feature.num}
-                    </span>
-                    <div className="about-card-icon">
-                      {feature.icon}
+                  {/* Inner White Background */}
+                  <div className="about-card-bg"></div>
+
+                  {/* Content */}
+                  <div className="about-card-content">
+                    <div className="about-card-header">
+                      <span className="about-card-num">
+                        {feature.num}
+                      </span>
+                      <div className="about-card-icon">
+                        {feature.icon}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="about-card-title">
+                        {feature.title}
+                      </h3>
+                      <p className="about-card-subtitle">
+                        {feature.subtitle}
+                      </p>
+                      <p className="about-card-text">
+                        {feature.desc}
+                      </p>
                     </div>
                   </div>
-                  
-                  <div>
-                    <h3 className="about-card-title">
-                      {feature.title}
-                    </h3>
-                    <p className="about-card-subtitle">
-                      {feature.subtitle}
-                    </p>
-                    <p className="about-card-text">
-                      {feature.desc}
-                    </p>
-                  </div>
-                </div>
-                </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </motion.div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
     </section>
   );
 }

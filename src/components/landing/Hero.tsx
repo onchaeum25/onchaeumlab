@@ -21,7 +21,7 @@ export default function Hero() {
               }
             }
           }}
-          className="max-w-3xl z-10"
+          className="hero-content-inner"
         >
           <motion.h2
             variants={{
@@ -49,7 +49,7 @@ export default function Hero() {
             }}
             className="hero-description"
           >
-            기획부터 디자인, 개발까지! 비즈니스의 성공을 위한 최적의 웹사이트를 구축합니다. <br className="hidden md:block" />
+            기획부터 디자인, 개발까지! 비즈니스의 성공을 위한 최적으로 구축합니다. <br className="hidden md:block" />
             온채움랩과 함께 당신만의 특별한 디지털 경험을 만들어보세요.
           </motion.p>
           <motion.div
@@ -62,8 +62,8 @@ export default function Hero() {
             <a href="#portfolio" className="hero-btn-primary">
               포트폴리오 보기
             </a>
-            <button 
-              onClick={() => window.dispatchEvent(new Event('open-contact-modal'))} 
+            <button
+              onClick={() => window.dispatchEvent(new Event('open-contact-modal'))}
               className="hero-btn-secondary"
             >
               프로젝트 문의하기
