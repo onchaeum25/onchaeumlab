@@ -111,7 +111,7 @@
 
 @media (min-width: 768px) {
   .footer-social-wrap {
-    align-items: flex-end;
+    align-items: flex-start;
   }
 }
 
@@ -163,8 +163,8 @@
 
 @media (min-width: 768px) {
   .footer-contact-col {
-    align-items: flex-end;
-    /* md:items-end */
+    align-items: flex-start;
+    /* md:items-start */
     text-align: left;
     /* md:text-left */
   }
