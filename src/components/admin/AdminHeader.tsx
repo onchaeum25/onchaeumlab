@@ -3,13 +3,15 @@ import { Bell, Search, UserCircle, X, ChevronRight, Check, Eye, EyeOff } from 'l
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { useInquiryStore } from '../../store/useInquiryStore';
+import { useAuthStore } from '../../store/useAuthStore';
 
 export default function AdminHeader() {
   const location = useLocation();
   const navigate = useNavigate();
   const { inquiries } = useInquiryStore();
+  const { logout } = useAuthStore();
   
-  // localStorage에서 초기값 로드
+  // ... (기타 스테이트 동일)
   const savedAdminData = JSON.parse(localStorage.getItem('admin_profile') || '{}');
 
   // 개인정보 수정 상태 관리 (저장된 값 우선, 없으면 기본값)
@@ -271,23 +273,36 @@ export default function AdminHeader() {
                       </div>
                     </div>
                   </div>
-                  <div className="flex gap-3 pt-4">
-                    <button 
-                      onClick={() => setShowProfileModal(false)}
-                      className="flex-1 py-4 bg-gray-100 text-gray-500 font-bold rounded-2xl hover:bg-gray-200 transition-colors"
+                  <div className="flex flex-col gap-4 pt-4">
+                    <div className="flex gap-3">
+                      <button 
+                        onClick={() => setShowProfileModal(false)}
+                        className="flex-1 py-4 bg-gray-100 text-gray-500 font-bold rounded-2xl hover:bg-gray-200 transition-colors"
+                      >
+                        취소
+                      </button>
+                      <button 
+                        onClick={handleSave}
+                        className={`flex-1 py-4 font-bold rounded-2xl transition-all flex items-center justify-center gap-2 ${
+                          isChanged 
+                            ? 'bg-point text-white shadow-lg shadow-point/30 hover:bg-point/90' 
+                            : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                        }`}
+                      >
+                        <Check size={18} />
+                        저장하기
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        logout();
+                        navigate('/admin/login', { replace: true });
+                        setShowProfileModal(false);
+                      }}
+                      className="text-xs font-bold text-red-400 hover:text-red-600 transition-colors py-2 flex items-center justify-center gap-1"
                     >
-                      취소
-                    </button>
-                    <button 
-                      onClick={handleSave}
-                      className={`flex-1 py-4 font-bold rounded-2xl transition-all flex items-center justify-center gap-2 ${
-                        isChanged 
-                          ? 'bg-point text-white shadow-lg shadow-point/30 hover:bg-point/90' 
-                          : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                      }`}
-                    >
-                      <Check size={18} />
-                      저장하기
+                      관리자 로그아웃
                     </button>
                   </div>
                 </div>
