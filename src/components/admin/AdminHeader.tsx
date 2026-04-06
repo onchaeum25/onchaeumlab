@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Bell, Search, UserCircle, X, ChevronRight, Check, Eye, EyeOff } from 'lucide-react';
+import { Bell, Search, UserCircle, X, ChevronRight, Check, Eye, EyeOff, Lock } from 'lucide-react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { useInquiryStore } from '../../store/useInquiryStore';
@@ -9,31 +9,30 @@ export default function AdminHeader() {
   const location = useLocation();
   const navigate = useNavigate();
   const { inquiries } = useInquiryStore();
-  const { logout } = useAuthStore();
-  
-  // ... (기타 스테이트 동일)
+  const { logout, user } = useAuthStore();
+
+  // localStorage에서 초기 이미지/이름 데이터 로드 (계정 정보는 AuthStore 기준)
   const savedAdminData = JSON.parse(localStorage.getItem('admin_profile') || '{}');
 
-  // 개인정보 수정 상태 관리 (저장된 값 우선, 없으면 기본값)
-  const [adminName, setAdminName] = useState(savedAdminData.name || '관리자');
-  const [adminEmail, setAdminEmail] = useState(savedAdminData.email || 'admin@onchaeumlab.co.kr');
-  const [adminPassword, setAdminPassword] = useState('');
+  const [adminName, setAdminName] = useState(user?.name || savedAdminData.name || '관리자');
+  const [adminEmail, setAdminEmail] = useState(user?.id || 'admin');
+  const [currentPassword, setCurrentPassword] = useState(''); // 기존 비밀번호 확인용
+  const [newPassword, setNewPassword] = useState(''); // 새 비밀번호
   const [profileImage, setProfileImage] = useState<string | null>(savedAdminData.image || null);
-  
+
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const [showCurrentPw, setShowCurrentPw] = useState(false);
+  const [showNewPw, setShowNewPw] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
 
-  // 수정 여부 확인 (localStorage에 저장된 현재 값과 비교)
-  const isChanged = 
-    adminName !== (savedAdminData.name || '관리자') || 
-    adminEmail !== (savedAdminData.email || 'admin@onchaeumlab.co.kr') || 
-    adminPassword !== '' || 
+  // 수정 여부 확인
+  const isChanged =
+    adminName !== (user?.name || '관리자') ||
+    newPassword !== '' ||
     profileImage !== (savedAdminData.image || null);
 
-  // 이미지 변경 핸들러
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -51,18 +50,25 @@ export default function AdminHeader() {
       return;
     }
 
-    // localStorage에 영구 저장
+    // 비밀번호를 변경하려고 할 때 검증 로직
+    if (newPassword !== '') {
+      if (currentPassword !== user?.password) {
+        alert('기존 비밀번호가 일치하지 않습니다. 다시 확인해 주세요.');
+        return;
+      }
+    }
+
+    // localStorage 및 상태 업데이트 (실제 DB 연동 전까지 유지용)
     const updatedProfile = {
       name: adminName,
-      email: adminEmail,
       image: profileImage,
     };
-    
     localStorage.setItem('admin_profile', JSON.stringify(updatedProfile));
-    
-    alert('개인정보가 성공적으로 저장되었습니다. (이제 새로고침해도 유지됩니다!)');
+
+    alert('개인정보가 성공적으로 저장되었습니다.');
     setShowProfileModal(false);
-    setAdminPassword(''); // 비밀번호 필드는 초기화
+    setCurrentPassword('');
+    setNewPassword('');
   };
 
   useEffect(() => {
@@ -84,6 +90,7 @@ export default function AdminHeader() {
     if (pathname.includes('/portfolios')) return '포트폴리오 관리';
     if (pathname.includes('/reviews')) return '고객 리뷰 관리';
     if (pathname.includes('/faqs')) return 'FAQ 관리';
+    if (pathname.includes('/users')) return '계정 관리';
     return '관리자 페이지';
   };
 
@@ -102,16 +109,16 @@ export default function AdminHeader() {
       <div className="flex items-center gap-6">
         <div className="relative hidden md:block group">
           <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-point transition-colors" />
-          <input 
-            type="text" 
-            placeholder="Search..." 
+          <input
+            type="text"
+            placeholder="Search..."
             className="pl-10 pr-4 py-2 w-64 bg-gray-50 border-none rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-point/20 transition-all font-medium"
           />
         </div>
 
         <div className="flex items-center gap-4 border-l border-gray-200 pl-6 h-6">
           <div className="relative" ref={notificationRef}>
-            <button 
+            <button
               onClick={() => setShowNotifications(!showNotifications)}
               className="relative p-2 text-gray-400 hover:text-gray-700 transition-colors"
             >
@@ -133,7 +140,7 @@ export default function AdminHeader() {
                   </div>
                   <div className="max-h-96 overflow-y-auto">
                     {recentInquiries.map((inquiry) => (
-                      <div 
+                      <div
                         key={inquiry.id}
                         onClick={() => {
                           navigate('/admin/inquiries');
@@ -155,7 +162,7 @@ export default function AdminHeader() {
                       </div>
                     ))}
                   </div>
-                  <button 
+                  <button
                     onClick={() => {
                       navigate('/admin/inquiries');
                       setShowNotifications(false);
@@ -168,8 +175,8 @@ export default function AdminHeader() {
               )}
             </AnimatePresence>
           </div>
-          
-          <div 
+
+          <div
             onClick={() => setShowProfileModal(true)}
             className="flex items-center gap-2 cursor-pointer group"
           >
@@ -201,17 +208,17 @@ export default function AdminHeader() {
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden"
             >
-              <input 
-                type="file" 
-                ref={fileInputRef} 
-                className="hidden" 
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
                 accept="image/*"
                 onChange={handleImageChange}
               />
               <div className="p-8">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-2xl font-bold text-gray-900">개인정보 수정</h2>
-                  <button 
+                  <button
                     onClick={() => setShowProfileModal(false)}
                     className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                   >
@@ -227,7 +234,7 @@ export default function AdminHeader() {
                         <UserCircle size={56} />
                       )}
                     </div>
-                    <button 
+                    <button
                       onClick={() => fileInputRef.current?.click()}
                       className="text-sm font-bold text-point hover:underline"
                     >
@@ -237,57 +244,77 @@ export default function AdminHeader() {
                   <div className="space-y-4">
                     <div>
                       <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">관리자 성함</label>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         value={adminName}
                         onChange={(e) => setAdminName(e.target.value)}
                         className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-point/20 outline-none transition-all font-medium"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">이메일 계정</label>
-                      <input 
-                        type="email" 
+                      <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 opacity-50">아이디 (변경불가)</label>
+                      <input
+                        type="text"
                         value={adminEmail}
-                        onChange={(e) => setAdminEmail(e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-point/20 outline-none transition-all font-medium"
+                        readOnly
+                        className="w-full px-4 py-3 bg-gray-100/50 text-gray-400 border-none rounded-xl outline-none cursor-not-allowed font-medium"
                       />
                     </div>
-                    <div>
-                      <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">비밀번호 변경</label>
-                      <div className="relative">
-                        <input 
-                          type={showPassword ? 'text' : 'password'}
-                          value={adminPassword}
-                          onChange={(e) => setAdminPassword(e.target.value)}
-                          placeholder="새 비밀번호 입력"
-                          className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-point/20 outline-none transition-all font-medium pr-12"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-gray-700 transition-colors"
-                        >
-                          {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                        </button>
+                    <div className="grid grid-cols-1 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">기존 비밀번호 확인</label>
+                        <div className="relative">
+                          <input
+                            type={showCurrentPw ? 'text' : 'password'}
+                            value={currentPassword}
+                            onChange={(e) => setCurrentPassword(e.target.value)}
+                            placeholder="본인 확인용 비밀번호"
+                            className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-point/20 outline-none transition-all font-medium pr-12"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowCurrentPw(!showCurrentPw)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-gray-700 transition-colors"
+                          >
+                            {showCurrentPw ? <EyeOff size={18} /> : <Eye size={18} />}
+                          </button>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">새 비밀번호 설정</label>
+                        <div className="relative">
+                          <input
+                            type={showNewPw ? 'text' : 'password'}
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            placeholder="변경할 새 비밀번호"
+                            className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-point/20 outline-none transition-all font-medium pr-12"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowNewPw(!showNewPw)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-gray-700 transition-colors"
+                          >
+                            {showNewPw ? <EyeOff size={18} /> : <Eye size={18} />}
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div className="flex flex-col gap-4 pt-4">
                     <div className="flex gap-3">
-                      <button 
+                      <button
                         onClick={() => setShowProfileModal(false)}
                         className="flex-1 py-4 bg-gray-100 text-gray-500 font-bold rounded-2xl hover:bg-gray-200 transition-colors"
                       >
                         취소
                       </button>
-                      <button 
+                      <button
                         onClick={handleSave}
-                        className={`flex-1 py-4 font-bold rounded-2xl transition-all flex items-center justify-center gap-2 ${
-                          isChanged 
-                            ? 'bg-point text-white shadow-lg shadow-point/30 hover:bg-point/90' 
-                            : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                        }`}
+                        className={`flex-1 py-4 font-bold rounded-2xl transition-all flex items-center justify-center gap-2 ${isChanged
+                          ? 'bg-point text-white shadow-lg shadow-point/30 hover:bg-point/90'
+                          : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                          }`}
                       >
                         <Check size={18} />
                         저장하기
@@ -317,15 +344,15 @@ export default function AdminHeader() {
 
 function MessageSquareIcon({ size, className }: { size?: number, className?: string }) {
   return (
-    <svg 
-      width={size} 
-      height={size} 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={className}
     >
       <path d="m3 21 1.9-1.9a8.5 8.5 0 1 1 3.8 3.8z" />
