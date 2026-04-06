@@ -11,9 +11,24 @@ export default function AdminHeader() {
   
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   // 알림창 밖을 클릭하면 닫히게 하는 로직
   const notificationRef = useRef<HTMLDivElement>(null);
+
+  // 이미지 변경 핸들러
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
@@ -58,7 +73,7 @@ export default function AdminHeader() {
         </div>
 
         <div className="flex items-center gap-4 border-l border-gray-200 pl-6 h-6">
-          {/* 알림 버튼 및 레이어 */}
+          {/* 알림 버튼 및 레이어 컴포넌트 생략(기존 동일) */}
           <div className="relative" ref={notificationRef}>
             <button 
               onClick={() => setShowNotifications(!showNotifications)}
@@ -125,8 +140,12 @@ export default function AdminHeader() {
             onClick={() => setShowProfileModal(true)}
             className="flex items-center gap-2 cursor-pointer group"
           >
-            <div className="w-8 h-8 rounded-full bg-point flex items-center justify-center text-white font-bold text-sm shadow-md group-hover:scale-105 transition-transform">
-              <UserCircle size={20} />
+            <div className="w-8 h-8 rounded-full bg-point flex items-center justify-center text-white font-bold text-sm shadow-md group-hover:scale-105 transition-transform overflow-hidden">
+              {profileImage ? (
+                <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
+              ) : (
+                <UserCircle size={20} />
+              )}
             </div>
             <span className="text-sm font-semibold text-gray-700">관리자님</span>
           </div>
@@ -150,6 +169,15 @@ export default function AdminHeader() {
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden"
             >
+              {/* 파일 입력 필드 (숨김) */}
+              <input 
+                type="file" 
+                ref={fileInputRef} 
+                className="hidden" 
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+
               <div className="p-8">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-2xl font-bold text-gray-900">개인정보 수정</h2>
@@ -163,10 +191,19 @@ export default function AdminHeader() {
 
                 <div className="space-y-6">
                   <div className="flex flex-col items-center gap-4 mb-8">
-                    <div className="w-20 h-20 rounded-full bg-point flex items-center justify-center text-white shadow-xl">
-                      <UserCircle size={48} />
+                    <div className="w-24 h-24 rounded-full bg-point flex items-center justify-center text-white shadow-xl overflow-hidden">
+                      {profileImage ? (
+                        <img src={profileImage} alt="Preview" className="w-full h-full object-cover" />
+                      ) : (
+                        <UserCircle size={56} />
+                      )}
                     </div>
-                    <button className="text-sm font-bold text-point hover:underline">프로필 사진 변경</button>
+                    <button 
+                      onClick={() => fileInputRef.current?.click()}
+                      className="text-sm font-bold text-point hover:underline"
+                    >
+                      프로필 사진 변경
+                    </button>
                   </div>
 
                   <div className="space-y-4">
