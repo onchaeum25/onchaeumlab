@@ -2,9 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/admin/LoginPage';
 import AdminLayout from './components/admin/AdminLayout';
-import DashboardPage from './pages/admin/DashboardPage';
 import InquiriesPage from './pages/admin/InquiriesPage';
-
 import PortfoliosPage from './pages/admin/PortfoliosPage';
 import ReviewsPage from './pages/admin/ReviewsPage';
 import FaqPage from './pages/admin/FaqPage';
@@ -21,9 +19,8 @@ export default function App() {
 
         {/* 보호된 관리자 내부 페이지들 (Layout 포함) */}
         <Route path="/admin" element={<AdminLayout />}>
-          {/* 기본 경로는 대시보드로 리다이렉트 */}
-          <Route index element={<Navigate to="/admin/dashboard" replace />} />
-          <Route path="dashboard" element={<DashboardPage />} />
+          {/* 기본 경로는 문의 내역으로 리다이렉트 (대시보드 대체) */}
+          <Route index element={<Navigate to="/admin/inquiries" replace />} />
           
           {/* 연락처 팝업으로 들어온 문의 내역 관리 페이지 */}
           <Route path="inquiries" element={<InquiriesPage />} />

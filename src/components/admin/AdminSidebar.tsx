@@ -10,7 +10,6 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-  { name: '대시보드', href: '/admin/dashboard', icon: BarChart3 },
   { name: '문의 내역', href: '/admin/inquiries', icon: MessageSquare },
   { name: '포트폴리오', href: '/admin/portfolios', icon: ImageIcon },
   { name: '리뷰 관리', href: '/admin/reviews', icon: Star },
