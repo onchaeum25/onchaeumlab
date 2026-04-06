@@ -7,6 +7,7 @@ import InquiriesPage from './pages/admin/InquiriesPage';
 
 import PortfoliosPage from './pages/admin/PortfoliosPage';
 import ReviewsPage from './pages/admin/ReviewsPage';
+import FaqPage from './pages/admin/FaqPage';
 
 export default function App() {
   return (
@@ -30,7 +31,7 @@ export default function App() {
           {/* 포트폴리오 관리 페이지 */}
           <Route path="portfolios" element={<PortfoliosPage />} />
           <Route path="reviews" element={<ReviewsPage />} />
-          <Route path="faqs" element={<div className="p-8 text-gray-500">FAQ 관리 개발중...</div>} />
+          <Route path="faqs" element={<FaqPage />} />
         </Route>
       </Routes>
     </Router>

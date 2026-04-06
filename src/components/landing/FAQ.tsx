@@ -1,28 +1,11 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
 import { Plus, Minus } from 'lucide-react';
+import { useFAQStore } from '../../store/useFAQStore';
 import '../../styles/components/FAQ.css';
 
-const faqs = [
-  {
-    q: "제작 기간은 보통 얼마나 걸리나요?",
-    a: "프로젝트 규모와 요구사항에 따라 다르지만, 일반적인 기업 홈페이지의 경우 기획부터 디자인, 개발, 오픈까지 약 4~6주 정도 소요됩니다. 쇼핑몰이나 복잡한 기능이 포함된 경우 일정이 추가될 수 있습니다."
-  },
-  {
-    q: "유지보수도 해주시나요?",
-    a: "네, 사이트 오픈 후 1년간 기본적인 버그 수정 및 안정화에 대한 무상 유지보수를 지원합니다. 이후에는 별도의 유지보수 계약을 통해 지속적인 관리와 업데이트를 제공해 드립니다."
-  },
-  {
-    q: "제작 비용은 어떻게 산정되나요?",
-    a: "제작 비용은 필요한 페이지 수, 디자인 퀄리티, 추가 기능(결제, 다국어 등)에 따라 맞춤 산정됩니다. 프로젝트 문의를 통해 대략적인 요구사항을 남겨주시면 상세한 견적을 안내해 드립니다."
-  },
-  {
-    q: "디자인 수정은 몇 번까지 가능한가요?",
-    a: "기획 단계에서 와이어프레임을 확정하고, 메인 시안 작업 시 충분한 협의를 거칩니다. 기본적으로 시안 단계에서 2~3회의 수정 과정을 포함하여 고객님이 만족하실 수 있는 결과물을 도출합니다."
-  }
-];
-
 export default function FAQ() {
+  const { faqs } = useFAQStore();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const toggleFAQ = (index: number) => {
@@ -69,7 +52,7 @@ export default function FAQ() {
               const isOpen = openIndex === idx;
               return (
                 <div
-                  key={idx}
+                  key={faq.id}
                   className={`faq-item ${isOpen ? 'is-open' : ''}`}
                 >
                   <button
@@ -78,7 +61,7 @@ export default function FAQ() {
                   >
                     <span className="faq-q-text">
                       <span className="faq-q-mark">Q.</span>
-                      {faq.q}
+                      {faq.question}
                     </span>
                     <span className="faq-icon-box">
                       {isOpen ? <Minus size={16} /> : <Plus size={16} />}
@@ -88,7 +71,7 @@ export default function FAQ() {
                   <div className="faq-ans-wrap">
                     <div className="faq-ans-inner">
                       <span className="faq-a-mark">A.</span>
-                      {faq.a}
+                      {faq.answer}
                     </div>
                   </div>
                 </div>
