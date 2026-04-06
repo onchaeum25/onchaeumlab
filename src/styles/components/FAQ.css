@@ -80,7 +80,8 @@
   .faq-header {
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start; /* Align tops exactly together */
+    align-items: flex-start;
+    /* Align tops exactly together */
     gap: 4rem;
   }
 }
@@ -116,7 +117,7 @@
   align-items: flex-start;
   gap: 1.5rem;
   /* Adjust top margin to align text baseline with the title's first line visually */
-  padding-top: 0.75rem; 
+  padding-top: 1rem;
 }
 
 .faq-desc {
