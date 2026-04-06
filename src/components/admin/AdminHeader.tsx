@@ -9,11 +9,14 @@ export default function AdminHeader() {
   const navigate = useNavigate();
   const { inquiries } = useInquiryStore();
   
-  // 개인정보 수정 상태 관리
-  const [adminName, setAdminName] = useState('관리자');
-  const [adminEmail, setAdminEmail] = useState('admin@onchaeumlab.co.kr');
+  // localStorage에서 초기값 로드
+  const savedAdminData = JSON.parse(localStorage.getItem('admin_profile') || '{}');
+
+  // 개인정보 수정 상태 관리 (저장된 값 우선, 없으면 기본값)
+  const [adminName, setAdminName] = useState(savedAdminData.name || '관리자');
+  const [adminEmail, setAdminEmail] = useState(savedAdminData.email || 'admin@onchaeumlab.co.kr');
   const [adminPassword, setAdminPassword] = useState('');
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(savedAdminData.image || null);
   
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
@@ -21,12 +24,12 @@ export default function AdminHeader() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
 
-  // ... (기타 핸들러 동일)
+  // 수정 여부 확인 (localStorage에 저장된 현재 값과 비교)
   const isChanged = 
-    adminName !== '관리자' || 
-    adminEmail !== 'admin@onchaeumlab.co.kr' || 
+    adminName !== (savedAdminData.name || '관리자') || 
+    adminEmail !== (savedAdminData.email || 'admin@onchaeumlab.co.kr') || 
     adminPassword !== '' || 
-    profileImage !== null;
+    profileImage !== (savedAdminData.image || null);
 
   // 이미지 변경 핸들러
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,8 +48,19 @@ export default function AdminHeader() {
       alert('수정한 내용이 없습니다. 내용을 변경해 주세요.');
       return;
     }
-    alert('개인정보가 성공적으로 수정되었습니다.');
+
+    // localStorage에 영구 저장
+    const updatedProfile = {
+      name: adminName,
+      email: adminEmail,
+      image: profileImage,
+    };
+    
+    localStorage.setItem('admin_profile', JSON.stringify(updatedProfile));
+    
+    alert('개인정보가 성공적으로 저장되었습니다. (이제 새로고침해도 유지됩니다!)');
     setShowProfileModal(false);
+    setAdminPassword(''); // 비밀번호 필드는 초기화
   };
 
   useEffect(() => {
