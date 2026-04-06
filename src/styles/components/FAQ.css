@@ -132,43 +132,61 @@
   border-color: #232589;
 }
 
-/* 🔹 카테고리 탭 스타일 */
-.faq-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+/* 🔹 카테고리 탭 스타일 (포트폴리오와 동일하게 수정) */
+.faq-filters {
+  background-color: #ffffff;
+  padding: 0.375rem;
+  border-radius: 9999px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid #f3f4f6;
+  display: inline-block;
+  width: auto;
   margin-bottom: 3rem;
-  border-bottom: 1px solid #e5e7eb;
-  padding-bottom: 1px;
 }
 
-.faq-tab-btn {
+.faq-filter-inner {
+  display: flex;
+  align-items: center;
   position: relative;
-  border-radius: 0;
-  padding: 1rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #6b7280;
-  transition: all 0.2s;
-  cursor: pointer;
 }
 
-.faq-tab-btn:hover {
+.faq-filter-btn {
+  position: relative;
+  border-radius: 9999px;
+  padding: 0.625rem 1.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: color 0.3s;
+  border: none;
+  background: none;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.faq-filter-btn:not(.is-active) {
+  color: #6b7280;
+}
+
+.faq-filter-btn.is-active {
+  color: #ffffff;
+}
+
+.faq-filter-btn:not(.is-active):hover {
   color: #111827;
 }
 
-.faq-tab-btn.is-active {
-  color: #232589;
+.faq-filter-active-bg {
+  position: absolute;
+  inset: 0;
+  background-color: #232589;
+  border-radius: 9999px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  z-index: -1;
 }
 
-.faq-tab-underline {
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: #232589;
-  z-index: 1;
+.faq-filter-btn-text {
+  position: relative;
+  z-index: 2;
 }
 
 .faq-list {

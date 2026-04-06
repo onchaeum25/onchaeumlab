@@ -56,26 +56,29 @@ export default function FAQ() {
             </div>
           </div>
 
-          {/* 🔹 카테고리 탭 */}
-          <div className="faq-tabs">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => {
-                  setActiveCategory(cat);
-                  setOpenIndex(null); // 카테고리 변경 시 열린 질문 닫기
-                }}
-                className={`faq-tab-btn ${activeCategory === cat ? 'is-active' : ''}`}
-              >
-                {cat}
-                {activeCategory === cat && (
-                  <motion.div 
-                    layoutId="activeTab"
-                    className="faq-tab-underline"
-                  />
-                )}
-              </button>
-            ))}
+          {/* 🔹 카테고리 탭 (포트폴리오 디자인과 동일하게 수정) */}
+          <div className="faq-filters">
+            <div className="faq-filter-inner">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => {
+                    setActiveCategory(cat);
+                    setOpenIndex(null);
+                  }}
+                  className={`faq-filter-btn ${activeCategory === cat ? 'is-active' : ''}`}
+                >
+                  <span className="faq-filter-btn-text">{cat}</span>
+                  {activeCategory === cat && (
+                    <motion.div 
+                      layoutId="faqTabBackground"
+                      className="faq-filter-active-bg"
+                      transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="faq-list">
