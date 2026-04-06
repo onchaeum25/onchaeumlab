@@ -6,7 +6,16 @@ import '../../styles/components/FAQ.css';
 
 export default function FAQ() {
   const { faqs } = useFAQStore();
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string>('전체');
+
+  // 추출된 카테고리 목록 (중복 제거)
+  const categories = ['전체', ...Array.from(new Set(faqs.map(f => f.category)))];
+
+  // 카테고리에 맞는 FAQ 필터링
+  const filteredFaqs = activeCategory === '전체' 
+    ? faqs 
+    : faqs.filter(f => f.category === activeCategory);
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -47,36 +56,64 @@ export default function FAQ() {
             </div>
           </div>
 
-          <div className="faq-list">
-            {faqs.map((faq, idx) => {
-              const isOpen = openIndex === idx;
-              return (
-                <div
-                  key={faq.id}
-                  className={`faq-item ${isOpen ? 'is-open' : ''}`}
-                >
-                  <button
-                    className="faq-btn"
-                    onClick={() => toggleFAQ(idx)}
-                  >
-                    <span className="faq-q-text">
-                      <span className="faq-q-mark">Q.</span>
-                      {faq.question}
-                    </span>
-                    <span className="faq-icon-box">
-                      {isOpen ? <Minus size={16} /> : <Plus size={16} />}
-                    </span>
-                  </button>
+          {/* 🔹 카테고리 탭 */}
+          <div className="faq-tabs">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => {
+                  setActiveCategory(cat);
+                  setOpenIndex(null); // 카테고리 변경 시 열린 질문 닫기
+                }}
+                className={`faq-tab-btn ${activeCategory === cat ? 'is-active' : ''}`}
+              >
+                {cat}
+                {activeCategory === cat && (
+                  <motion.div 
+                    layoutId="activeTab"
+                    className="faq-tab-underline"
+                  />
+                )}
+              </button>
+            ))}
+          </div>
 
-                  <div className="faq-ans-wrap">
-                    <div className="faq-ans-inner">
-                      <span className="faq-a-mark">A.</span>
-                      {faq.answer}
+          <div className="faq-list">
+            {filteredFaqs.length > 0 ? (
+              filteredFaqs.map((faq, idx) => {
+                const isOpen = openIndex === idx;
+                return (
+                  <div
+                    key={faq.id}
+                    className={`faq-item ${isOpen ? 'is-open' : ''}`}
+                  >
+                    <button
+                      className="faq-btn"
+                      onClick={() => toggleFAQ(idx)}
+                    >
+                      <div className="faq-q-text">
+                        <span className="faq-q-mark">Q.</span>
+                        {/* 🔹 카테고리 태그 노출 */}
+                        <span className="faq-category-tag">{faq.category}</span>
+                        {faq.question}
+                      </div>
+                      <span className="faq-icon-box">
+                        {isOpen ? <Minus size={16} /> : <Plus size={16} />}
+                      </span>
+                    </button>
+
+                    <div className="faq-ans-wrap">
+                      <div className="faq-ans-inner">
+                        <span className="faq-a-mark">A.</span>
+                        {faq.answer}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <div className="faq-empty">등록된 질문이 없습니다.</div>
+            )}
           </div>
 
           <div className="faq-footer">
