@@ -46,38 +46,31 @@ export default function FAQ() {
               <p className="faq-desc">
                 웹사이트 제작 및 프로젝트 진행에 대해 고객님들이 가장 궁금해하시는 질문들을 모았습니다. 추가 문의사항은 언제든 연락주세요.
               </p>
-              <button 
-                type="button" 
-                onClick={() => window.dispatchEvent(new Event('open-contact-modal'))} 
-                className="faq-contact-link"
-              >
-                Contact Us <span>+</span>
-              </button>
-            </div>
-          </div>
-
-          {/* 🔹 카테고리 탭 (포트폴리오 디자인과 동일하게 수정) */}
-          <div className="faq-filters">
-            <div className="faq-filter-inner">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => {
-                    setActiveCategory(cat);
-                    setOpenIndex(null);
-                  }}
-                  className={`faq-filter-btn ${activeCategory === cat ? 'is-active' : ''}`}
-                >
-                  <span className="faq-filter-btn-text">{cat}</span>
-                  {activeCategory === cat && (
-                    <motion.div 
-                      layoutId="faqTabBackground"
-                      className="faq-filter-active-bg"
-                      transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                    />
-                  )}
-                </button>
-              ))}
+              
+              {/* 🔹 카테고리 탭 (헤더 영역으로 이동) */}
+              <div className="faq-filters">
+                <div className="faq-filter-inner">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => {
+                        setActiveCategory(cat);
+                        setOpenIndex(null);
+                      }}
+                      className={`faq-filter-btn ${activeCategory === cat ? 'is-active' : ''}`}
+                    >
+                      <span className="faq-filter-btn-text">{cat}</span>
+                      {activeCategory === cat && (
+                        <motion.div 
+                          layoutId="faqTabBackground"
+                          className="faq-filter-active-bg"
+                          transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                        />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
