@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Mail, Briefcase, Star, HelpCircle } from 'lucide-react';
 import { useInquiryStore } from '../../store/useInquiryStore';
@@ -6,10 +7,17 @@ import { useReviewStore } from '../../store/useReviewStore';
 import { useFAQStore } from '../../store/useFAQStore';
 
 export default function DashboardPage() {
-  const { inquiries } = useInquiryStore();
-  const { portfolios } = usePortfolioStore();
-  const { reviews } = useReviewStore();
+  const { inquiries, fetchInquiries } = useInquiryStore();
+  const { portfolios, fetchPortfolios } = usePortfolioStore();
+  const { reviews, fetchReviews } = useReviewStore();
   const { faqs } = useFAQStore();
+
+  useEffect(() => {
+    // 페이지 진입 시 모든 데이터 갱신
+    fetchInquiries();
+    fetchPortfolios();
+    fetchReviews();
+  }, []);
 
   const stats = [
     { title: '전체 문의', count: inquiries.length, icon: <Mail className="text-blue-500" />, color: 'bg-blue-50' },
