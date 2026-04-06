@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Bell, Search, UserCircle, X, ChevronRight, Check } from 'lucide-react';
+import { Bell, Search, UserCircle, X, ChevronRight, Check, Eye, EyeOff } from 'lucide-react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { useInquiryStore } from '../../store/useInquiryStore';
@@ -17,10 +17,11 @@ export default function AdminHeader() {
   
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
 
-  // 수정 여부 확인 (초기값과 비교)
+  // ... (기타 핸들러 동일)
   const isChanged = 
     adminName !== '관리자' || 
     adminEmail !== 'admin@onchaeumlab.co.kr' || 
@@ -238,13 +239,22 @@ export default function AdminHeader() {
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">비밀번호 변경</label>
-                      <input 
-                        type="password" 
-                        value={adminPassword}
-                        onChange={(e) => setAdminPassword(e.target.value)}
-                        placeholder="새 비밀번호 입력"
-                        className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-point/20 outline-none transition-all font-medium"
-                      />
+                      <div className="relative">
+                        <input 
+                          type={showPassword ? 'text' : 'password'}
+                          value={adminPassword}
+                          onChange={(e) => setAdminPassword(e.target.value)}
+                          placeholder="새 비밀번호 입력"
+                          className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-point/20 outline-none transition-all font-medium pr-12"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-gray-700 transition-colors"
+                        >
+                          {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                        </button>
+                      </div>
                     </div>
                   </div>
                   <div className="flex gap-3 pt-4">
