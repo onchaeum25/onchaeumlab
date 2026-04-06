@@ -70,16 +70,17 @@
 .faq-header {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
-  margin-bottom: 4rem;
-  gap: 2.5rem;
+  margin-bottom: 3.5rem;
+  gap: 2rem;
 }
 
 @media(min-width: 1024px) {
   .faq-header {
     flex-direction: row;
-    align-items: flex-end; /* Align box tops proportionally */
+    justify-content: space-between;
+    align-items: flex-start; /* Align tops exactly together */
     gap: 4rem;
   }
 }
@@ -89,7 +90,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   color: #232589;
 }
 
@@ -97,8 +98,9 @@
   font-size: 2.25rem;
   font-weight: 700;
   color: #111827;
-  line-height: 1.25;
+  line-height: 1.3;
   letter-spacing: -0.025em;
+  white-space: nowrap;
 }
 
 @media(min-width: 768px) {
@@ -113,14 +115,8 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 1.5rem;
-  padding-bottom: 0.5rem; /* Optical balance */
-}
-
-@media(min-width: 1024px) {
-  .faq-desc-box {
-    /* Align description text precisely with the first line of main title */
-    margin-bottom: 0.2rem; 
-  }
+  /* Adjust top margin to align text baseline with the title's first line visually */
+  padding-top: 0.75rem; 
 }
 
 .faq-desc {
