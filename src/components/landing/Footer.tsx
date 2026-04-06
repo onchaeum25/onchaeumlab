@@ -57,7 +57,7 @@ export default function Footer() {
 
               <ul className="footer-contact-list">
                 <li>대표 추희정  |  사업자등록번호: 875-47-01257</li>
-                <li>이메일: onchaeum25@gmail.com  | 전화 : 010-9009-3279</li>
+                <li>이메일: onchaeumlab@gmail.com  | 전화 : 010-9009-3279</li>
                 <li>주소 : 서울특별시 노원구 덕릉로 459-21</li>
               </ul>
             </div>

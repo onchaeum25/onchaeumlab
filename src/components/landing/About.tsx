@@ -110,21 +110,42 @@ export default function About() {
       </div>
 
       {/* Cards Carousel */}
-      <motion.div
-        initial={{ opacity: 0, x: 200 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="about-carousel-wrap"
-      >
-        <div
+      <div className="about-carousel-wrap">
+        <motion.div
           ref={scrollRef}
           className="about-carousel"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.15,
+              }
+            }
+          }}
         >
           {features.map((feature, idx) => (
-            <div
+            <motion.div
               key={idx}
               className="about-card-wrap"
+              variants={{
+                hidden: { opacity: 0, y: 50, scale: 0.9 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  transition: {
+                    type: "spring",
+                    damping: 15,
+                    stiffness: 100
+                  }
+                }
+              }}
+              whileHover={{ 
+                y: -15,
+                transition: { type: "spring", stiffness: 300, damping: 20 }
+              }}
             >
               <div className="about-card-inner">
                 <div className="about-card-box">
@@ -159,10 +180,10 @@ export default function About() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </section>
   );
 }
