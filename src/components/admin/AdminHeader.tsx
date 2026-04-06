@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Bell, Search, UserCircle, X, ChevronRight, Check } from 'lucide-react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { useInquiryStore } from '../../store/useInquiryStore';
 
@@ -9,11 +9,19 @@ export default function AdminHeader() {
   const navigate = useNavigate();
   const { inquiries } = useInquiryStore();
   
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showProfileModal, setShowProfileModal] = useState(false);
+  // 개인정보 수정 상태 관리
+  const [adminName, setAdminName] = useState('관리자');
+  const [adminEmail, setAdminEmail] = useState('admin@onchaeumlab.co.kr');
+  const [adminPassword, setAdminPassword] = useState('');
   const [profileImage, setProfileImage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   
+  // 수정 여부 확인 (초기값과 비교)
+  const isChanged = 
+    adminName !== '관리자' || 
+    adminEmail !== 'admin@onchaeumlab.co.kr' || 
+    adminPassword !== '' || 
+    profileImage !== null;
+
   // 알림창 밖을 클릭하면 닫히게 하는 로직
   const notificationRef = useRef<HTMLDivElement>(null);
 
@@ -29,6 +37,18 @@ export default function AdminHeader() {
     }
   };
 
+  const handleSave = () => {
+    if (!isChanged) {
+      alert('수정한 내용이 없습니다. 내용을 변경해 주세요.');
+      return;
+    }
+    
+    // 실제 저장 로직 (이후 DB 연동 시 보완)
+    alert('개인정보가 성공적으로 수정되었습니다.');
+    setShowProfileModal(false);
+    // 수정 완료 후 상태 초기화 (여기선 예시로 유지)
+  };
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
@@ -39,23 +59,18 @@ export default function AdminHeader() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // 미확인 문의 필터링 (임의로 최근 5개 표시)
-  const recentInquiries = inquiries.slice(0, 5);
-  const hasNotifications = inquiries.length > 0;
+  // ... (getPageTitle 생략)
 
-  // URL 경로에 따라 동적으로 타이틀 생성
-  const getPageTitle = (pathname: string) => {
-    if (pathname.includes('/dashboard')) return '대시보드';
-    if (pathname.includes('/inquiries')) return '문의 내역 관리';
-    if (pathname.includes('/portfolios')) return '포트폴리오 관리';
-    if (pathname.includes('/reviews')) return '고객 리뷰 관리';
-    if (pathname.includes('/faqs')) return 'FAQ 관리';
-    return '관리자 페이지';
-  };
+  // ... (헤더 UI 생략 - 하단 모달 부분 위주로 교체)
 
   return (
     <header className="h-16 bg-white shrink-0 flex items-center justify-between px-8 border-b border-gray-100/50 shadow-sm z-20">
-      <div className="flex items-center gap-4">
+      {/* (헤더 내용 동일) */}
+      <div className="flex items-center gap-6">
+        <Link to="/admin/dashboard" className="flex items-center hover:opacity-75 transition-opacity">
+          <img src="/logo-black.png" alt="Logo" className="h-4" />
+          <div className="w-[1px] h-3 bg-gray-200 ml-6"></div>
+        </Link>
         <h1 className="text-xl font-bold text-gray-800 tracking-tight">
           {getPageTitle(location.pathname)}
         </h1>
@@ -73,71 +88,24 @@ export default function AdminHeader() {
         </div>
 
         <div className="flex items-center gap-4 border-l border-gray-200 pl-6 h-6">
-          {/* 알림 버튼 및 레이어 컴포넌트 생략(기존 동일) */}
+          {/* 알림 버튼 및 레이어 */}
           <div className="relative" ref={notificationRef}>
             <button 
               onClick={() => setShowNotifications(!showNotifications)}
               className="relative p-2 text-gray-400 hover:text-gray-700 transition-colors"
             >
               <Bell size={20} />
-              {/* 알림 있으면 빨강, 없으면 초록 */}
               <span className={`absolute top-1 right-2 w-2 h-2 rounded-full border border-white ${hasNotifications ? 'bg-red-500' : 'bg-green-500'}`}></span>
             </button>
 
-            {/* 알림 레이어 */}
-            <AnimatePresence>
-              {showNotifications && hasNotifications && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  className="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden"
-                >
-                  <div className="p-4 border-b border-gray-50 flex justify-between items-center">
-                    <span className="font-bold text-gray-800">새로운 알림</span>
-                    <span className="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold">NEW {inquiries.length}</span>
-                  </div>
-                  <div className="max-h-96 overflow-y-auto">
-                    {recentInquiries.map((inquiry) => (
-                      <div 
-                        key={inquiry.id}
-                        onClick={() => {
-                          navigate('/admin/inquiries');
-                          setShowNotifications(false);
-                        }}
-                        className="p-4 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-50 last:border-0"
-                      >
-                        <div className="flex items-start gap-3">
-                          <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
-                            <MessageSquareIcon size={14} className="text-blue-500" />
-                          </div>
-                          <div className="flex-1">
-                            <p className="text-sm font-semibold text-gray-800 line-clamp-1">{inquiry.name}님의 새로운 문의</p>
-                            <p className="text-xs text-gray-500 line-clamp-1 mt-0.5">{inquiry.message}</p>
-                            <p className="text-[10px] text-gray-400 mt-1">{new Date(inquiry.created_at).toLocaleString()}</p>
-                          </div>
-                          <ChevronRight size={14} className="text-gray-300 self-center" />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <button 
-                    onClick={() => {
-                      navigate('/admin/inquiries');
-                      setShowNotifications(false);
-                    }}
-                    className="w-full py-3 bg-gray-50 text-gray-500 text-xs font-bold hover:bg-gray-100 transition-colors"
-                  >
-                    전체 보기
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {/* 알림 레이어 ... 생략 */}
           </div>
           
-          {/* 프로필 및 수정 모달 */}
           <div 
-            onClick={() => setShowProfileModal(true)}
+            onClick={() => {
+              // 모달 열 때 비밀번호 등 입력값 초기화 시키고 싶다면 여기서 처리 가능
+              setShowProfileModal(true);
+            }}
             className="flex items-center gap-2 cursor-pointer group"
           >
             <div className="w-8 h-8 rounded-full bg-point flex items-center justify-center text-white font-bold text-sm shadow-md group-hover:scale-105 transition-transform overflow-hidden">
@@ -147,7 +115,7 @@ export default function AdminHeader() {
                 <UserCircle size={20} />
               )}
             </div>
-            <span className="text-sm font-semibold text-gray-700">관리자님</span>
+            <span className="text-sm font-semibold text-gray-700">{adminName}님</span>
           </div>
         </div>
       </div>
@@ -169,7 +137,6 @@ export default function AdminHeader() {
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden"
             >
-              {/* 파일 입력 필드 (숨김) */}
               <input 
                 type="file" 
                 ref={fileInputRef} 
@@ -190,7 +157,7 @@ export default function AdminHeader() {
                 </div>
 
                 <div className="space-y-6">
-                  <div className="flex flex-col items-center gap-4 mb-8">
+                  <div className="flex flex-col items-center gap-4 mb-4">
                     <div className="w-24 h-24 rounded-full bg-point flex items-center justify-center text-white shadow-xl overflow-hidden">
                       {profileImage ? (
                         <img src={profileImage} alt="Preview" className="w-full h-full object-cover" />
@@ -211,7 +178,8 @@ export default function AdminHeader() {
                       <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">관리자 성함</label>
                       <input 
                         type="text" 
-                        defaultValue="관리자" 
+                        value={adminName}
+                        onChange={(e) => setAdminName(e.target.value)}
                         className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-point/20 outline-none transition-all font-medium"
                       />
                     </div>
@@ -219,7 +187,8 @@ export default function AdminHeader() {
                       <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">이메일 계정</label>
                       <input 
                         type="email" 
-                        defaultValue="admin@onchaeumlab.co.kr" 
+                        value={adminEmail}
+                        onChange={(e) => setAdminEmail(e.target.value)}
                         className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-point/20 outline-none transition-all font-medium"
                       />
                     </div>
@@ -227,6 +196,8 @@ export default function AdminHeader() {
                       <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">비밀번호 변경</label>
                       <input 
                         type="password" 
+                        value={adminPassword}
+                        onChange={(e) => setAdminPassword(e.target.value)}
                         placeholder="새 비밀번호 입력"
                         className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-point/20 outline-none transition-all font-medium"
                       />
@@ -241,11 +212,12 @@ export default function AdminHeader() {
                       취소
                     </button>
                     <button 
-                      onClick={() => {
-                        alert('개인정보가 성공적으로 수정되었습니다.');
-                        setShowProfileModal(false);
-                      }}
-                      className="flex-1 py-4 bg-point text-white font-bold rounded-2xl shadow-lg shadow-point/30 hover:bg-point/90 transition-all flex items-center justify-center gap-2"
+                      onClick={handleSave}
+                      className={`flex-1 py-4 font-bold rounded-2xl transition-all flex items-center justify-center gap-2 ${
+                        isChanged 
+                          ? 'bg-point text-white shadow-lg shadow-point/30 hover:bg-point/90' 
+                          : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      }`}
                     >
                       <Check size={18} />
                       저장하기
