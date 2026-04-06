@@ -1,24 +1,37 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   BarChart3, 
   MessageSquare, 
   Image as ImageIcon, 
   Star, 
   HelpCircle,
-  Settings,
+  Users,
   LogOut
 } from 'lucide-react';
-
-const navItems = [
-  { name: '대시보드', href: '/admin/dashboard', icon: BarChart3 },
-  { name: '문의 내역', href: '/admin/inquiries', icon: MessageSquare },
-  { name: '포트폴리오', href: '/admin/portfolios', icon: ImageIcon },
-  { name: '리뷰 관리', href: '/admin/reviews', icon: Star },
-  { name: 'FAQ 관리', href: '/admin/faqs', icon: HelpCircle },
-];
+import { useAuthStore } from '../../store/useAuthStore';
 
 export default function AdminSidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
+
+  const navItems = [
+    { name: '대시보드', href: '/admin/dashboard', icon: BarChart3 },
+    { name: '문의 내역', href: '/admin/inquiries', icon: MessageSquare },
+    { name: '포트폴리오', href: '/admin/portfolios', icon: ImageIcon },
+    { name: '리뷰 관리', href: '/admin/reviews', icon: Star },
+    { name: 'FAQ 관리', href: '/admin/faqs', icon: HelpCircle },
+  ];
+
+  // 총관리자일 경우 계정 관리 메뉴 추가
+  if (user?.isSuper) {
+    navItems.push({ name: '계정 관리', href: '/admin/users', icon: Users });
+  }
+
+  const handleLogout = () => {
+    logout();
+    navigate('/admin/login', { replace: true });
+  };
 
   return (
     <aside className="w-64 bg-white border-r border-gray-100 flex flex-col h-full shadow-[4px_0_24px_rgba(0,0,0,0.02)] relative z-10">
@@ -55,11 +68,11 @@ export default function AdminSidebar() {
 
       <div className="p-4 border-t border-gray-100">
         <button 
-          onClick={() => window.location.href = '/admin/login'}
+          onClick={handleLogout}
           className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-red-50 hover:text-red-600 w-full transition-colors text-sm font-medium"
         >
           <LogOut size={18} />
-          로그아웃
+          <span>로그아웃</span>
         </button>
       </div>
     </aside>

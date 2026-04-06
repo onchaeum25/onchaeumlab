@@ -7,6 +7,7 @@ import InquiriesPage from './pages/admin/InquiriesPage';
 import PortfoliosPage from './pages/admin/PortfoliosPage';
 import ReviewsPage from './pages/admin/ReviewsPage';
 import FaqPage from './pages/admin/FaqPage';
+import UsersPage from './pages/admin/UsersPage';
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="portfolios" element={<PortfoliosPage />} />
           <Route path="reviews" element={<ReviewsPage />} />
           <Route path="faqs" element={<FaqPage />} />
+          <Route path="users" element={<UsersPage />} />
         </Route>
       </Routes>
     </Router>
