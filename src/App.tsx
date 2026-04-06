@@ -22,6 +22,9 @@ export default function App() {
           {/* 기본 경로는 문의 내역으로 리다이렉트 (대시보드 대체) */}
           <Route index element={<Navigate to="/admin/inquiries" replace />} />
           
+          {/* /admin/dashboard로 직접 들어오는 경우 처리 */}
+          <Route path="dashboard" element={<Navigate to="/admin/inquiries" replace />} />
+          
           {/* 연락처 팝업으로 들어온 문의 내역 관리 페이지 */}
           <Route path="inquiries" element={<InquiriesPage />} />
           
