@@ -20,8 +20,8 @@ export default function App() {
 
         {/* 보호된 관리자 내부 페이지들 (Layout 포함) */}
         <Route path="/admin" element={<AdminLayout />}>
-          {/* 대시보드 (요약 현황) */}
-          <Route index element={<DashboardPage />} />
+          {/* 기본 경로는 대시보드로 유도 (Layout의 인증 체크를 통과해야 함) */}
+          <Route index element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="dashboard" element={<DashboardPage />} />
           
           {/* 연락처 팝업으로 들어온 문의 내역 관리 페이지 */}
