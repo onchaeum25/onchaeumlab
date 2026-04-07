@@ -88,7 +88,8 @@ const budgetOptions = [
   { value: "100-200", label: "100만원 ~ 200만원" },
   { value: "200-300", label: "200만원 ~ 300만원" },
   { value: "300이상", label: "300만원 이상" },
-  { value: "미정", label: "미정" }
+  { value: "미정", label: "미정" },
+  { value: "custom", label: "직접입력" }
 ];
 
 const serviceOptions = [
@@ -96,7 +97,8 @@ const serviceOptions = [
   { value: "corporate", label: "기업&사업 홈페이지" },
   { value: "shop", label: "쇼핑몰" },
   { value: "uxui", label: "UXUI 디자인협업" },
-  { value: "other", label: "기타" }
+  { value: "other", label: "기타" },
+  { value: "custom", label: "직접입력" }
 ];
 
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
@@ -106,7 +108,9 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     email: "",
     phone: "",
     budget: "",
+    customBudget: "",
     service: "",
+    customService: "",
     message: ""
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -142,7 +146,16 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       newErrors.phone = "올바른 연락처 형식이 아닙니다. (예: 010-0000-0000)";
     }
 
-    if (!formData.service) newErrors.service = "요청 서비스를 선택해주세요.";
+    if (!formData.service) {
+      newErrors.service = "요청 서비스를 선택해주세요.";
+    } else if (formData.service === 'custom' && !formData.customService.trim()) {
+      newErrors.service = "요청 서비스를 직접 입력해주세요.";
+    }
+
+    if (formData.budget === 'custom' && !formData.customBudget.trim()) {
+      newErrors.budget = "예산을 직접 입력해주세요.";
+    }
+
     if (!formData.message.trim()) newErrors.message = "문의 내용을 입력해주세요.";
 
     setErrors(newErrors);
@@ -154,7 +167,15 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     if (validate()) {
       setIsSubmitting(true);
       try {
-        await addInquiry(formData);
+        const finalData = {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          budget: formData.budget === 'custom' ? formData.customBudget : formData.budget,
+          service: formData.service === 'custom' ? formData.customService : formData.service,
+          message: formData.message
+        };
+        await addInquiry(finalData as any);
         
         alert("접수가 되었습니다. 빠른 확인후 연락 드리겠습니다.");
         
@@ -163,7 +184,9 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           email: "",
           phone: "",
           budget: "",
+          customBudget: "",
           service: "",
+          customService: "",
           message: ""
         });
         setErrors({});
@@ -265,23 +288,48 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               {/* Budget */}
               <div className="form-item">
                 <label className="form-item-label">예산</label>
-                <CustomSelect 
-                  options={budgetOptions} 
-                  value={formData.budget} 
-                  onChange={(val) => handleSelectChange('budget', val)} 
-                />
+                <div className="flex flex-col gap-2">
+                  <CustomSelect 
+                    options={budgetOptions} 
+                    value={formData.budget} 
+                    onChange={(val) => handleSelectChange('budget', val)} 
+                  />
+                  {formData.budget === 'custom' && (
+                    <input
+                      type="text"
+                      name="customBudget"
+                      value={formData.customBudget}
+                      onChange={handleChange}
+                      placeholder="예산을 직접 입력해주세요."
+                      className={`form-item-input ${errors.budget ? 'has-error' : ''}`}
+                    />
+                  )}
+                </div>
+                {errors.budget && <p className="form-error-msg">{errors.budget}</p>}
               </div>
             </div>
 
             {/* Service */}
             <div className="form-item">
               <label className="form-item-label">요청서비스 <span className="required">*</span></label>
-              <div className={errors.service ? 'rounded-lg ring-1 ring-red-500' : ''}>
-                <CustomSelect 
-                  options={serviceOptions} 
-                  value={formData.service} 
-                  onChange={(val) => handleSelectChange('service', val)} 
-                />
+              <div className="flex flex-col gap-2">
+                <div className={errors.service && !formData.service ? 'rounded-lg ring-1 ring-red-500' : ''}>
+                  <CustomSelect 
+                    options={serviceOptions} 
+                    value={formData.service} 
+                    onChange={(val) => handleSelectChange('service', val)} 
+                  />
+                </div>
+                {formData.service === 'custom' && (
+                  <input
+                    type="text"
+                    name="customService"
+                    value={formData.customService}
+                    onChange={handleChange}
+                    placeholder="요청 서비스를 직접 입력해주세요."
+                    className={`form-item-input ${errors.service && formData.service === 'custom' ? 'has-error' : ''}`}
+                  />
+                )}
               </div>
               {errors.service && <p className="form-error-msg">{errors.service}</p>}
             </div>
