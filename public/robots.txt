@@ -1,3 +1,31 @@
+# 온채움랩 robots.txt
+# https://onchaeumlab.co.kr
+
+# 구글봇
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /login
+
+# 네이버봇
+User-agent: Yeti
+Allow: /
+Disallow: /admin/
+Disallow: /login
+
+# 빙봇
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /login
+
+# 다음봇
+User-agent: Daum
+Allow: /
+Disallow: /admin/
+Disallow: /login
+
+# 전체 봇 기본 설정
 User-agent: *
 Allow: /
 Disallow: /admin/
@@ -5,4 +33,5 @@ Disallow: /private/
 Disallow: /api/
 Disallow: /login
 
+# 사이트맵
 Sitemap: https://onchaeumlab.co.kr/sitemap.xml
