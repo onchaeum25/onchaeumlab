@@ -20,9 +20,9 @@ interface AuthState {
 
 // 총관리자 계정 설정
 const SUPER_ADMIN: User = {
-  id: 'admin',
+  id: import.meta.env.VITE_ADMIN_ID || 'admin',
   name: '총관리자',
-  password: '3gmlwjd2!',
+  password: import.meta.env.VITE_ADMIN_PASSWORD || '3gmlwjd2!',
   isSuper: true
 };
 
