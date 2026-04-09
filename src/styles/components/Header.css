@@ -50,6 +50,8 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  width: 100%;
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
@@ -63,6 +65,7 @@
   align-items: center;
   padding-left: 0.75rem;
   padding-right: 0.5rem;
+  flex-shrink: 0;
 }
 
 .header-logo-img {
@@ -81,6 +84,13 @@
   align-items: center;
   gap: 0;
   position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.header-desktop-nav::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Opera */
 }
 
 @media (min-width: 768px) {
@@ -97,6 +107,8 @@
   font-weight: 500;
   transition: color 0.3s;
   color: #6b7280;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 @media (min-width: 768px) {
