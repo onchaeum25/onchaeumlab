@@ -5,13 +5,13 @@
 /* 1. 히어로 전체 감싸는 배경 영역 */
 .hero-wrapper {
   position: relative;
-  padding-top: 5.5rem;
+  padding-top: calc(4.5rem + 10vh);
   padding-bottom: 5rem;
   overflow: hidden;
   scroll-snap-align: start;
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   background-color: #EBE3D9;
   background-image: url('/hero-bg.jpg');
   background-size: cover;
@@ -150,6 +150,7 @@
   .hero-wrapper {
     padding-top: 12rem;
     padding-bottom: 8rem;
+    align-items: center;
   }
   .hero-overlay {
     background-color: transparent;
