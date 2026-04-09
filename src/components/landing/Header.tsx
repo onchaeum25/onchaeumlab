@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
 import { motion } from 'motion/react';
 import '../../styles/components/Header.css';
 
@@ -12,7 +11,6 @@ const navLinks = [
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('');
 
   useEffect(() => {
@@ -67,7 +65,6 @@ export default function Header() {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, name: string) => {
     e.preventDefault();
     setActiveLink(name);
-    setIsMobileMenuOpen(false);
 
     const targetId = href.replace('#', '');
     const element = document.getElementById(targetId);
@@ -116,33 +113,7 @@ export default function Header() {
             ))}
           </nav>
         </div>
-
-        {/* Mobile Menu Toggle */}
-        <button
-          className="header-mobile-btn"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
       </div>
-
-      {/* Mobile Nav Dropdown */}
-      {isMobileMenuOpen && (
-        <div className="header-mobile-menu">
-          <div className="header-mobile-nav-inner">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className={`header-mobile-nav-link ${activeLink === link.name ? 'is-active' : ''}`}
-                onClick={(e) => handleNavClick(e, link.href, link.name)}
-              >
-                {link.name}
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
     </header>
   );
 }
