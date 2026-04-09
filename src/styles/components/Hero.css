@@ -13,7 +13,7 @@
   display: flex;
   align-items: flex-start;
   background-color: #EBE3D9;
-  background-image: url('/hero-bg.jpg');
+  background-image: url('/hero-mbg.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -151,6 +151,7 @@
     padding-top: 12rem;
     padding-bottom: 8rem;
     align-items: center;
+    background-image: url('/hero-bg.jpg');
   }
   .hero-overlay {
     background-color: transparent;
