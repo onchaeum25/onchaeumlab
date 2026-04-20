@@ -1,6 +1,6 @@
 /* Reviews.css */
 .reviews-section {
-  padding-top: 5.5rem;
+  padding-top: 5rem;
   padding-bottom: 6rem;
   background-color: #F8F9FA;
   scroll-snap-align: start;
@@ -22,7 +22,8 @@
 }
 
 .reviews-badge {
-  background-color: #EEAB1B; /* Assuming sub color or similar */
+  background-color: #EEAB1B;
+  /* Assuming sub color or similar */
   color: #111827;
   font-size: 0.75rem;
   font-weight: 700;
@@ -124,7 +125,8 @@
 .reviews-title-sub {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #EEAB1B; /* assuming point color */
+  color: #EEAB1B;
+  /* assuming point color */
   margin-bottom: 0.5rem;
 }
 
@@ -380,7 +382,9 @@
 }
 
 @media (min-width: 768px) {
-  .marquee-mask-left, .marquee-mask-right {
+
+  .marquee-mask-left,
+  .marquee-mask-right {
     width: 8rem;
   }
 }
@@ -499,13 +503,23 @@
 
 /* Keyframes */
 @keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes marquee-reverse {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .animate-marquee {
@@ -520,7 +534,7 @@
 .reviews-action-wrap {
   display: flex;
   justify-content: center;
-  margin-top: 4rem;
+  margin-top: 1rem;
 }
 
 .write-review-btn {
@@ -627,7 +641,7 @@
   margin-left: 0.125rem;
 }
 
-.form-group input, 
+.form-group input,
 .form-group textarea {
   background-color: #f9fafb;
   border: 1px solid #e5e7eb;
@@ -637,7 +651,7 @@
   transition: all 0.2s;
 }
 
-.form-group input:focus, 
+.form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;

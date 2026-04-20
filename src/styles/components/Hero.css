@@ -5,32 +5,37 @@
 /* 1. 히어로 전체 감싸는 배경 영역 */
 .hero-wrapper {
   position: relative;
-  padding-top: calc(4.5rem + 10vh);
-  padding-bottom: 5rem;
+  padding-top: 0;
+  padding-bottom: 0;
   overflow: hidden;
   scroll-snap-align: start;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   background-color: #EBE3D9;
   background-image: url('/hero-mbg.jpg');
-  background-size: 100% auto;
-  background-position: top center;
+  background-size: cover;
+  background-position: top;
   background-repeat: no-repeat;
 }
 
 /* 2. 어두운 오버레이 막 (사용자 요청으로 제거: 투명하게 설정) */
 .hero-overlay {
   position: absolute;
-  top: 0; right: 0; bottom: 0; left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background-color: transparent;
   backdrop-filter: none;
   z-index: 0;
 }
 
-/* 3. 히어로 내부 박스 정렬 */
+/* 3. 히어로 내부 박스 정렬 (Customization Point: 전체 레이아웃 정렬 및 패딩) */
 .hero-container {
-  max-width: 94rem; /* wider layout for PC */
+  max-width: 94rem;
+  /* wider layout for PC */
   margin-left: auto;
   margin-right: auto;
   padding-left: 1.5rem;
@@ -44,7 +49,7 @@
   justify-content: center;
 }
 
-/* 4. 작은 상단 타이틀 (영어 캡션) */
+/* 4. 작은 상단 타이틀 (Customization Point: 캡션 텍스트 색상 및 간격) */
 .hero-subtitle {
   color: var(--color-point);
   font-weight: 600;
@@ -54,7 +59,7 @@
   text-transform: uppercase;
 }
 
-/* 5. 메인 큰 제목 (당신의 브랜드가 빛나는 공간) */
+/* 5. 메인 큰 제목 (Customization Point: 타이틀 폰트 크기 및 색상) */
 .hero-title {
   font-size: 1.875rem;
   font-weight: 700;
@@ -64,9 +69,10 @@
   letter-spacing: -0.025em;
 }
 
-/* 6. 내용 텍스트 (기획부터 디자인 개발까지) */
+/* 6. 내용 텍스트 (Customization Point: 설명글 폰트 및 줄간격) */
 .hero-content-inner {
-  max-width: 48rem; /* max-w-3xl */
+  max-width: 48rem;
+  /* max-w-3xl */
   position: relative;
   z-index: 10;
 }
@@ -80,7 +86,7 @@
   word-break: keep-all;
 }
 
-/* 7. 버튼 컨테이너 (포트폴리오 보기 등) */
+/* 7. 버튼 컨테이너 (Customization Point: 버튼 간격 및 배치) */
 .hero-button-group {
   display: flex;
   flex-wrap: wrap;
@@ -89,7 +95,7 @@
   padding-bottom: 2rem;
 }
 
-/* 8. 주요 버튼 스타일 (포트폴리오 보기) */
+/* 8. 주요 버튼 스타일 (Customization Point: 버튼 배경색 및 그림자) */
 .hero-btn-primary {
   display: inline-flex;
   align-items: center;
@@ -100,31 +106,33 @@
   border-radius: 9999px;
   font-weight: 500;
   transition: background-color 0.2s ease-in-out;
-  box-shadow: 0 10px 15px -3px rgba(18, 17, 75, 0.2); 
+  box-shadow: 0 10px 15px -3px rgba(18, 17, 75, 0.2);
 }
+
 .hero-btn-primary:hover {
   background-color: #1a1b66;
 }
 
-/* 9. 서브 버튼 스타일 (프로젝트 문의하기) */
+/* 9. 서브 버튼 스타일 (Customization Point: 서브 버튼 디자인) */
 .hero-btn-secondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background-color: #ffffff;
-  color: #1f2937; 
-  border: 1px solid #e5e7eb; 
+  color: #1f2937;
+  border: 1px solid #e5e7eb;
   padding: 1rem 2rem;
   border-radius: 9999px;
   font-weight: 500;
   transition: background-color 0.2s ease-in-out;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
+
 .hero-btn-secondary:hover {
   background-color: #f9fafb;
 }
 
-/* 10. SNS 둥근 아이콘 버튼 (코드상에선 삭제됨) */
+/* 10. SNS 둥근 아이콘 버튼 (Customization Point: 아이콘 버튼 스타일) */
 .hero-btn-icon {
   display: flex;
   align-items: center;
@@ -137,6 +145,7 @@
   transition: background-color 0.2s ease-in-out;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
+
 .hero-btn-icon:hover {
   background-color: #1a1b66;
 }
@@ -145,27 +154,46 @@
    반응형 미디어 쿼리 (Responsive Rules)
    ========================================================================== */
 
+/* 초소형 모바일 (Customization Point: 400px 이하 해상도 특화 레이아웃) */
+@media (max-width: 400px) {
+  .hero-wrapper {
+    align-items: flex-start;
+    /* 상단 정렬로 변경 */
+  }
+
+  .hero-container {
+    padding-top: 15dvh;
+    /* 상단에서 10% 지점부터 시작 */
+  }
+}
+
 /* 태블릿 이상 (Tailwind md: 768px) */
 @media (min-width: 768px) {
   .hero-wrapper {
     padding-top: 12rem;
     padding-bottom: 8rem;
     align-items: center;
+    min-height: 100vh;
+    height: auto;
     background-image: url('/hero-bg.jpg');
     background-size: cover;
     background-position: center;
   }
+
   .hero-overlay {
     background-color: transparent;
     backdrop-filter: none;
   }
+
   .hero-subtitle {
     font-size: 1rem;
   }
+
   .hero-title {
     font-size: 3rem;
     line-height: 1;
   }
+
   .hero-description {
     font-size: 1.25rem;
   }

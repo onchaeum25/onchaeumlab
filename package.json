@@ -11,7 +11,8 @@
     "deploy": "gh-pages -d dist",
     "preview": "vite preview",
     "clean": "rm -rf dist",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "sonar": "sonar-scanner"
   },
   "dependencies": {
     "@google/genai": "^1.29.0",
@@ -39,6 +40,7 @@
     "autoprefixer": "^10.4.21",
     "gh-pages": "^6.3.0",
     "puppeteer": "^24.40.0",
+    "sonarqube-scanner": "^4.3.5",
     "tailwindcss": "^4.1.14",
     "tsx": "^4.21.0",
     "typescript": "~5.8.2",

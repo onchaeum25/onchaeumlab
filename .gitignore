@@ -33,3 +33,11 @@ dist-ssr
 .env.test.local
 .env.production.local
 .env*.local
+
+# Large files and tools
+sonarqube/
+*.zip
+*.jar
+*.mjs
+node_modules/
+dist/

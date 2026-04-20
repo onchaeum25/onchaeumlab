@@ -28,7 +28,7 @@ export default function Hero() {
               hidden: { opacity: 0, y: 30 },
               visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
             }}
-            className="hero-subtitle"
+            className="hero-subtitle hidden md:block"
           >
             Research institute that fully fills the brand's value
           </motion.h2>
@@ -39,8 +39,8 @@ export default function Hero() {
             }}
             className="hero-title"
           >
-            당신의 브랜드가 빛나는 공간,<br />
-            <span className="text-point">복잡한 과정은 온채움랩이 채우다</span>
+            당신의 브랜드가 빛나는 공간,<br className="hidden md:block" />
+            <span className="text-point hidden md:inline">복잡한 과정은 온채움랩이 채우다</span>
           </motion.h1>
           <motion.p
             variants={{
@@ -49,8 +49,8 @@ export default function Hero() {
             }}
             className="hero-description"
           >
-            기획부터 디자인, 개발까지! 비즈니스의 성공을 위한 최적으로 구축합니다. <br className="hidden md:block" />
-            온채움랩과 함께 당신만의 특별한 디지털 경험을 만들어보세요.
+            <span className="hidden md:inline">기획부터 디자인, 개발까지! 비즈니스의 성공을 위한 최적으로 구축합니다. <br /></span>
+            기획부터 개발까지, 온채움랩이 특별한 디지털 경험을 만듭니다.
           </motion.p>
           <motion.div
             variants={{

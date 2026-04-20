@@ -1,8 +1,8 @@
 /* WhyUs.css */
 .whyus-section {
   background-color: #1A1A1A;
-  padding-top: 5.5rem;
-  padding-bottom: 6rem;
+  padding-top: 5rem;
+  padding-bottom: 1rem;
   overflow: hidden;
   position: relative;
   scroll-snap-align: start;
@@ -195,14 +195,14 @@
 .whyus-image-wrap {
   position: relative;
   /* 팁: 이미지 크기를 변경하려면 아래 width/height 값을 수정하세요 */
-  width: 15.5rem; 
+  width: 15.5rem;
   height: 15.5rem;
 }
 
 @media (min-width: 1024px) {
   .whyus-image-wrap {
     /* 팁: PC 화면에서 이미지 크기를 변경하려면 아래 width/height 값을 수정하세요 */
-    width: 24.5rem; 
+    width: 24.5rem;
     height: 24.5rem;
   }
 }

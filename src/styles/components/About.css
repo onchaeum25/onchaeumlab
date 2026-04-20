@@ -1,14 +1,15 @@
 /* About.css */
 .about-section {
-  padding-top: 5.5rem;
-  padding-bottom: 6rem;
+  padding-top: 5rem;
+  padding-bottom: 2rem;
   background-color: #F8F9FA;
   overflow: hidden;
   scroll-snap-align: start;
 }
 
 .about-container {
-  max-width: 94rem; /* wider layout for PC */
+  max-width: 94rem;
+  /* wider layout for PC */
   margin: 0 auto;
   padding: 0 1.5rem;
 }
@@ -64,7 +65,7 @@
   justify-content: center;
   color: #4b5563;
   transition: all 0.3s;
-  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   background: transparent;
   cursor: pointer;
 }
@@ -137,14 +138,14 @@
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 22px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   transition: all 0.5s;
   overflow: hidden;
 }
 
 .about-card-inner:hover .about-card-box {
   border-color: transparent;
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .about-card-gradient {
