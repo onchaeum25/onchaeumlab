@@ -171,16 +171,27 @@ export default function Portfolio() {
                     dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selectedItem.desc) }}
                   />
                 </div>
-                {selectedItem.detailImage.map((url, index) => (
-                  <img
-                    key={index}
-                    src={url}
-                    alt={`${selectedItem.title} detail ${index + 1}`}
-                    className="portfolio-modal-img"
-                    referrerPolicy="no-referrer"
-                    style={{ marginBottom: '1rem' }}
-                  />
-                ))}
+                {selectedItem.detailImage.map((url, index) => {
+                  const isPdf = url.toLowerCase().includes('.pdf');
+                  return isPdf ? (
+                    <iframe
+                      key={index}
+                      src={`${url}#toolbar=0&navpanes=0&scrollbar=0`}
+                      width="100%"
+                      style={{ height: '800px', marginBottom: '1rem', border: 'none' }}
+                      title={`${selectedItem.title} detail ${index + 1}`}
+                    />
+                  ) : (
+                    <img
+                      key={index}
+                      src={url}
+                      alt={`${selectedItem.title} detail ${index + 1}`}
+                      className="portfolio-modal-img"
+                      referrerPolicy="no-referrer"
+                      style={{ marginBottom: '1rem' }}
+                    />
+                  );
+                })}
               </div>
             </motion.div>
           </motion.div>

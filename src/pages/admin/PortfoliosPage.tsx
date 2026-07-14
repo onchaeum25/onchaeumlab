@@ -379,7 +379,13 @@ export default function PortfoliosPage() {
                               key={url} 
                               className="aspect-[3/4] bg-gray-50 rounded-xl relative group overflow-hidden border border-gray-100 shadow-sm"
                             >
-                              <img src={url} alt={`Detail ${index}`} className="w-full h-full object-cover" />
+                              {url.toLowerCase().includes('.pdf') ? (
+                                <div className="w-full h-full flex flex-col items-center justify-center bg-gray-200">
+                                  <span className="text-xs font-bold text-gray-500">PDF 문서</span>
+                                </div>
+                              ) : (
+                                <img src={url} alt={`Detail ${index}`} className="w-full h-full object-cover" />
+                              )}
                               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
                                 <div className="flex gap-1">
                                   <button 
@@ -420,7 +426,7 @@ export default function PortfoliosPage() {
                           <input 
                             type="file" 
                             className="hidden" 
-                            accept="image/*" 
+                            accept="image/*,application/pdf" 
                             multiple 
                             onChange={handleMultipleFilesChange} 
                           />
